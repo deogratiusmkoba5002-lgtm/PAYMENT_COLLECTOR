@@ -20,11 +20,13 @@ def create_app(config_class=Config):
     login_manager.login_view = "auth.login"
     login_manager.session_protection = "strong"
 
+    from app.main.routes import main_bp
     from app.auth.routes import auth_bp
     from app.campaigns.routes import campaigns_bp
     from app.payments.routes import payments_bp
     from app.exports.excel import exports_bp
 
+    app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(campaigns_bp)
     app.register_blueprint(payments_bp)

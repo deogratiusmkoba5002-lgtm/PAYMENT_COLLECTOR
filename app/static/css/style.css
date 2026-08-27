@@ -239,3 +239,39 @@ label { display: block; margin: 12px 0 4px; font-size: 14px; font-weight: 600; c
   .dash-header { flex-direction: column; align-items: flex-start; gap: 10px; }
   #toast-container { left: 20px; right: 20px; max-width: none; }
 }
+.hero {
+  text-align: center;
+  padding: 60px 20px 40px;
+}
+.hero h1 {
+  font-size: 32px;
+  margin: 0 0 16px;
+  color: var(--color-text);
+}
+.hero-sub {
+  max-width: 560px;
+  margin: 0 auto 28px;
+  color: var(--color-text-muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+.feature-card h3 {
+  margin: 0 0 8px;
+  color: var(--color-primary);
+  font-size: 16px;
+}
+@media (max-width: 480px) {
+  .hero h1 { font-size: 24px; }
+}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}ContribuTZ — Collect contributions, simply{% endblock %}
+{% block content %}
+<div class="hero">
+  <h1>Collect contributions for anything that matters.</h1>
+  <p class="hero-sub">
+    Weddings, funerals, fundraisers, community projects — create a campaign,
+    share one link, and watch contributions come in. Anyone can start a
+    campaign. Anyone can contribute to any campaign, including their own.
+  </p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{{ url_for('auth.register') }}">Get Started — It's Free</a>
+    <a class="btn btn-secondary" href="{{ url_for('auth.login') }}">Log In</a>
+  </div>
+</div>
+
+<div class="feature-grid">
+  <div class="card feature-card">
+    <h3>Create a campaign</h3>
+    <p class="muted">Set a title, an optional per-person target, and an optional deadline. Get a shareable link instantly.</p>
+  </div>
+  <div class="card feature-card">
+    <h3>Share it anywhere</h3>
+    <p class="muted">Send the link via WhatsApp or wherever your people are. No account needed to view it.</p>
+  </div>
+  <div class="card feature-card">
+    <h3>Track it live</h3>
+    <p class="muted">See who's contributed, how much is collected, and export a full report to Excel anytime.</p>
+  </div>
+</div>
+{% endblock %}
