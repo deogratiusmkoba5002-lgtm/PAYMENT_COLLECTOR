@@ -275,3 +275,11 @@ label { display: block; margin: 12px 0 4px; font-size: 14px; font-weight: 600; c
 @media (max-width: 480px) {
   .hero h1 { font-size: 24px; }
 }
+
+.nav-link {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+}
+.nav-link:hover { color: var(--color-primary); }
