@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Contribute to {{ campaign.title }}{% endblock %}
+{% block content %}
+<div class="card auth-card">
+  <h1>Contribute to {{ campaign.title }}</h1>
+  {% if participant.total_paid %}
+  <p>You've already paid {{ "%.2f"|format(participant.total_paid) }}
+     {% if participant.remaining is not none %} — {{ "%.2f"|format(participant.remaining) }} remaining{% endif %}.</p>
+  {% endif %}
+  <form method="POST" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>You'll be shown as
+      <input class="input" type="text" name="display_name" id="display_name"
+             value="{{ participant.display_name }}" maxlength="80">
+    </label>
+    <label class="checkbox-label">
+      <input type="checkbox" name="is_anonymous" id="is_anonymous" {% if participant.is_anonymous %}checked{% endif %}>
+      Contribute anonymously instead
+    </label>
+    <label>Amount <input class="input" type="number" name="amount" step="0.01" min="0.01" required></label>
+    <button class="btn btn-primary" type="submit">Continue to Payment</button>
+  </form>
+</div>
+<script>
+  document.getElementById("is_anonymous").addEventListener("change", function () {
+    document.getElementById("display_name").disabled = this.checked;
+  });
+</script>
+{% endblock %}

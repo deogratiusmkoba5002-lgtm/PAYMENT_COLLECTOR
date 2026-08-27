@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ campaign.title }}{% endblock %}
+{% block content %}
+<div class="dash-header">
+  <h1>{{ campaign.title }}</h1>
+  <span class="badge badge-{{ 'closed' if campaign.is_closed else ('expired' if campaign.is_expired else 'active') }}">
+    {{ 'Closed' if campaign.is_closed else ('Expired' if campaign.is_expired else 'Active') }}
+  </span>
+</div>
+<div class="card">
+  <p>Public link:
+    <code id="public-link">{{ request.url_root.rstrip('/') }}{{ url_for('payments.campaign_page', slug=campaign.slug) }}</code>
+    <button id="copy-link-btn" class="btn btn-secondary"
+      data-link="{{ request.url_root.rstrip('/') }}{{ url_for('payments.campaign_page', slug=campaign.slug) }}">Copy Link</button>
+  </p>
+  <p>Total collected: {{ "%.2f"|format(campaign.total_collected) }}</p>
+  <p>Successful contributors: {{ campaign.successful_contributor_count }}</p>
+  {% if campaign.per_contributor_target %}<p>Target per contributor: {{ "%.2f"|format(campaign.per_contributor_target) }}</p>{% endif %}
+  {% if campaign.deadline %}<p>Deadline: {{ campaign.deadline.strftime("%d %b %Y, %H:%M") }}</p>{% endif %}
+  <div class="actions">
+    <a class="btn btn-secondary" href="{{ url_for('exports.export_campaign', campaign_id=campaign.id) }}">Download Excel Report</a>
+    <a class="btn btn-secondary" href="{{ url_for('payments.contribute', slug=campaign.slug)}}">Contribute to this Campaign</a>
+    {% if not campaign.is_closed %}
+    <form method="POST" action="{{ url_for('campaigns.close_campaign', campaign_id=campaign.id) }}" style="display:inline">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-danger" type="submit">Close Campaign</button>
+    </form>
+    {% elif not campaign.is_expired %}
+    <form method="POST" action="{{ url_for('campaigns.reopen_campaign', campaign_id=campaign.id) }}" style="display:inline">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-secondary" type="submit">Reopen Campaign</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+<div class="card">
+  <h2>Contributors</h2>
+  <table class="contrib-table">
+    <thead><tr><th>Name</th><th>Amount Paid</th><th>Remaining</th><th>Progress</th></tr></thead>
+    <tbody>
+      {% for p in participants %}
+      {% if p.total_paid > 0 %}
+      <tr>
+        <td>{{ p.public_display_name }}</td>
+        <td>{{ "%.2f"|format(p.total_paid) }}</td>
+        <td>{{ "%.2f"|format(p.remaining) if p.remaining is not none else "N/A" }}</td>
+        <td>{{ (p.progress_percent ~ "%") if p.progress_percent is not none else "N/A" }}</td>
+      </tr>
+      {% endif %}
+      {% else %}
+      <tr><td colspan="4">No contributions yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

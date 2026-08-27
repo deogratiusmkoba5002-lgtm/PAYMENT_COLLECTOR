@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Payment Confirmation{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>{{ campaign.title }}</h1>
+  <p>Contributor: <strong>{{ participant.public_display_name }}</strong></p>
+  <p>This payment: <strong>{{ "%.2f"|format(contribution.amount) }}</strong></p>
+  <p>Reference: <code>{{ contribution.reference_id }}</code></p>
+  <div id="status-box" class="status-box status-{{ contribution.status }}">
+    Status: <span id="payment-status">{{ contribution.status }}</span>
+  </div>
+  <div id="progress-info" {% if contribution.status != "successful" %}style="display:none"{% endif %}>
+    <p>Total paid so far: <span id="total-paid">{{ "%.2f"|format(participant.total_paid) }}</span>
+    {% if participant.remaining is not none %}
+      — Remaining: <span id="remaining-amount">{{ "%.2f"|format(participant.remaining) }}</span>
+    {% endif %}
+    </p>
+  </div>
+  {% if contribution.status == "pending" %}
+  <div id="simulate-controls">
+    <p class="hint">This is a simulated payment for the MVP. In production this step
+      is replaced by the real payment provider's confirmation.</p>
+    <button class="btn btn-primary simulate-btn"
+      data-confirm-url="{{ url_for('payments.simulate_confirm', public_id=contribution.public_id) }}"
+      data-outcome="successful">Simulate Successful Payment</button>
+    <button class="btn btn-secondary simulate-btn"
+      data-confirm-url="{{ url_for('payments.simulate_confirm', public_id=contribution.public_id) }}"
+      data-outcome="failed">Simulate Failed Payment</button>
+  </div>
+  {% endif %}
+  <a href="{{ url_for('payments.campaign_page', slug=campaign.slug) }}">Back to campaign page</a>
+</div>
+{% endblock %}
