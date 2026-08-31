@@ -32,7 +32,20 @@ def slugify(title):
     return slug
 
 
+def get_accessible_campaign_or_404(campaign_id):
+    """Allows the campaign owner OR anyone who has contributed to it."""
+    campaign = Campaign.query.get_or_404(campaign_id)
+    is_owner = campaign.owner_id == current_user.id
+    is_participant = CampaignParticipant.query.filter_by(
+        campaign_id=campaign.id, user_id=current_user.id
+    ).first() is not None
+    if not is_owner and not is_participant:
+        abort(403)
+    return campaign
+
+
 def get_owned_campaign_or_404(campaign_id):
+    """Owner-only — used for closing/reopening a campaign."""
     campaign = Campaign.query.get_or_404(campaign_id)
     if campaign.owner_id != current_user.id:
         abort(403)
@@ -93,9 +106,12 @@ def create_campaign():
 @campaigns_bp.route("/campaigns/<int:campaign_id>")
 @login_required
 def view_campaign(campaign_id):
-    campaign = get_owned_campaign_or_404(campaign_id)
+    campaign = get_accessible_campaign_or_404(campaign_id)
+    is_owner = campaign.owner_id == current_user.id
     participants = campaign.participants.order_by(CampaignParticipant.created_at.desc()).all()
-    return render_template("dashboard/campaign_detail.html", campaign=campaign, participants=participants)
+    return render_template(
+        "dashboard/campaign_detail.html", campaign=campaign, participants=participants, is_owner=is_owner
+    )
 
 
 @campaigns_bp.route("/campaigns/<int:campaign_id>/close", methods=["POST"])

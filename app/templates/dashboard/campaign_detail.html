@@ -19,17 +19,19 @@
   {% if campaign.deadline %}<p>Deadline: {{ campaign.deadline.strftime("%d %b %Y, %H:%M") }}</p>{% endif %}
   <div class="actions">
     <a class="btn btn-secondary" href="{{ url_for('exports.export_campaign', campaign_id=campaign.id) }}">Download Excel Report</a>
-    <a class="btn btn-secondary" href="{{ url_for('payments.contribute', slug=campaign.slug)}}">Contribute to this Campaign</a>
-    {% if not campaign.is_closed %}
-    <form method="POST" action="{{ url_for('campaigns.close_campaign', campaign_id=campaign.id) }}" style="display:inline">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <button class="btn btn-danger" type="submit">Close Campaign</button>
-    </form>
-    {% elif not campaign.is_expired %}
-    <form method="POST" action="{{ url_for('campaigns.reopen_campaign', campaign_id=campaign.id) }}" style="display:inline">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <button class="btn btn-secondary" type="submit">Reopen Campaign</button>
-    </form>
+    <a class="btn btn-secondary" href="{{ url_for('payments.contribute', slug=campaign.slug) }}">Contribute to This Campaign</a>
+    {% if is_owner %}
+      {% if not campaign.is_closed %}
+      <form method="POST" action="{{ url_for('campaigns.close_campaign', campaign_id=campaign.id) }}" style="display:inline">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-danger" type="submit">Close Campaign</button>
+      </form>
+      {% elif not campaign.is_expired %}
+      <form method="POST" action="{{ url_for('campaigns.reopen_campaign', campaign_id=campaign.id) }}" style="display:inline">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-secondary" type="submit">Reopen Campaign</button>
+      </form>
+      {% endif %}
     {% endif %}
   </div>
 </div>

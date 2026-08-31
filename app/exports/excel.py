@@ -13,9 +13,12 @@ exports_bp = Blueprint("exports", __name__, url_prefix="/dashboard")
 @login_required
 def export_campaign(campaign_id):
     campaign = Campaign.query.get_or_404(campaign_id)
-    if campaign.owner_id != current_user.id:
+    is_owner = campaign.owner_id == current_user.id
+    is_participant = CampaignParticipant.query.filter_by(
+        campaign_id=campaign.id, user_id=current_user.id
+    ).first() is not None
+    if not is_owner and not is_participant:
         abort(403)
-
     wb = Workbook()
     bold = Font(bold=True)
 
