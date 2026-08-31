@@ -28,6 +28,9 @@
       data-outcome="failed">Simulate Failed Payment</button>
   </div>
   {% endif %}
-  <a href="{{ url_for('payments.campaign_page', slug=campaign.slug) }}">Back to campaign page</a>
+  <div class="actions">
+    <a class="btn btn-secondary" href="{{ url_for('payments.campaign_page', slug=campaign.slug) }}">Back to Campaign Page</a>
+    <a class="btn btn-primary" href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.id) }}">View All Contributions</a>
+  </div>
 </div>
 {% endblock %}

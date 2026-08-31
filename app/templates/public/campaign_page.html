@@ -23,12 +23,17 @@
   </div>
   {% endif %}
 
-  {% if campaign.is_active %}
-    <a class="btn btn-primary" href="{{ url_for('payments.contribute', slug=campaign.slug) }}">
-      {% if participant %}Add Another Contribution{% else %}Contribute Now{% endif %}
-    </a>
-  {% else %}
-  <p class="closed-banner">This campaign is no longer accepting contributions.</p>
-  {% endif %}
+  <div class="actions">
+    {% if campaign.is_active %}
+      <a class="btn btn-primary" href="{{ url_for('payments.contribute', slug=campaign.slug) }}">
+        {% if participant %}Add Another Contribution{% else %}Contribute Now{% endif %}
+      </a>
+    {% else %}
+      <p class="closed-banner">This campaign is no longer accepting contributions.</p>
+    {% endif %}
+    {% if participant %}
+      <a class="btn btn-secondary" href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.id) }}">View All Contributions</a>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}
