@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Create Account{% endblock %}
 {% block content %}
-<div class="card auth-card">
+<div class="muted-box">
   <h1>Create Your Account</h1>
   <p class="muted">One account lets you create your own campaigns and contribute to anyone else's.</p>
+</div>
+<div class="card auth-card">
   <form method="POST" novalidate>
     {{ form.hidden_tag() }}
-    <label>{{ form.full_name.label }} {{ form.full_name(class_="input") }}</label>
+    <label for="name">{{ form.full_name.label }} {{ form.full_name(class_="input") }}</label>
     {% for err in form.full_name.errors %}<p class="error">{{ err }}</p>{% endfor %}
     <label>{{ form.username.label }} {{ form.username(class_="input") }}</label>
     {% for err in form.username.errors %}<p class="error">{{ err }}</p>{% endfor %}

@@ -16,9 +16,9 @@
       {{ 'Closed' if c.is_closed else ('Expired' if c.is_expired else 'Active') }}
     </span>
     <p class="amount">Collected: {{ "%.2f"|format(c.total_collected) }}</p>
-    {% if c.per_contributor_target %}<p class="muted">Target per person: {{ "%.2f"|format(c.per_contributor_target) }}</p>{% endif %}
-    <p class="muted">{{ c.successful_contributor_count }} contributor(s)</p>
-    {% if c.deadline %}<p class="muted">Deadline: {{ c.deadline.strftime("%d %b %Y") }}</p>{% endif %}
+    {% if c.per_contributor_target %}<p class="muted" id="target">Target per person: {{ "%.2f"|format(c.per_contributor_target) }}</p>{% endif %}
+    <p class="muted" id="contributor">{{ c.successful_contributor_count }} contributor(s)</p>
+    {% if c.deadline %}<p class="muted" id="deadline">Deadline: {{ c.deadline.strftime("%d %b %Y") }}</p>{% endif %}
   </a>
   {% endfor %}
 </div>

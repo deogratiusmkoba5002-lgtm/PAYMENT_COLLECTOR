@@ -1,13 +1,13 @@
 :root {
-  --color-primary: #0f766e;
-  --color-primary-hover: #115e59;
+  --color-primary: #9e228e;
+  --color-primary-hover: var(--color-bg);
   --color-accent: #f59e0b;
-  --color-bg: #f8fafc;
+  --color-bg: linear-gradient(to top, #9e228e, #c7b0b0);
   --color-card: #ffffff;
   --color-text: #0f172a;
-  --color-text-muted: #64748b;
+  --color-text-muted: #00000c;
   --color-border: #e2e8f0;
-  --color-success: #16a34a;
+  --color-success: #6af59d;
   --color-pending: #f59e0b;
   --color-failed: #701761;
 }
@@ -21,20 +21,24 @@ body {
   color: var(--color-text);
 }
 
+
+
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 14px 20px;
-  background: var(--color-card);
+  background: #c7b0b0;
   border-bottom: 1px solid var(--color-border);
+  border-bottom: none;
 }
 
 .brand { 
   font-weight: 700; 
   text-decoration: none; 
-  color: var(--color-primary); 
+  color: var(--color-text); 
   font-size: 18px; 
+  
 }
 
 .topbar nav { 
@@ -67,6 +71,18 @@ body {
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
+
+#target {
+  text-align: left;
+}
+
+#contributor {
+  text-align: left;
+}
+
+#deadline {
+  text-align: left;
+}
 .campaign-card:hover {
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
   transform: translateY(-2px);
@@ -87,7 +103,7 @@ label { display: block; margin: 12px 0 4px; font-size: 14px; font-weight: 600; c
 .input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+  box-shadow: 0 0 0 3px rgba(199, 176, 176, 0.15);
 }
 
 /* Buttons */
@@ -143,7 +159,17 @@ label { display: block; margin: 12px 0 4px; font-size: 14px; font-weight: 600; c
 .campaign-card { text-decoration: none; color: inherit; display: block; }
 .campaign-card h2 { margin: 0 0 8px; font-size: 17px; }
 .amount { font-weight: 700; color: var(--color-text); }
-.muted { color: var(--color-text-muted); font-size: 14px; margin: 4px 0; }
+.muted-box {
+  display: grid;
+  place-items: center;
+}
+.muted { 
+  color: var(--color-text-muted); 
+  font-size: 14px; 
+  margin: 4px 0;
+  text-align: center;
+   
+}
 
 .badge {
   display: inline-block;
