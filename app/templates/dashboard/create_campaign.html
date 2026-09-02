@@ -2,16 +2,16 @@
 {% block title %}New Campaign{% endblock %}
 {% block content %}
 <div class="card auth-card">
-  <h1>Create Campaign</h1>
+  <h1>{{ t('create_campaign_title') }}</h1>
   <form method="POST" novalidate>
     {{ form.hidden_tag() }}
-    <label>{{ form.title.label }} {{ form.title(class_="input") }}</label>
+    <label>{{ t('create_campaign_title_label') }} {{ form.title(class_="input") }}</label>
     {% for err in form.title.errors %}<p class="error">{{ err }}</p>{% endfor %}
-    <label>{{ form.description.label }} {{ form.description(class_="input", rows=4) }}</label>
-    <label>{{ form.per_contributor_target.label }} (optional) {{ form.per_contributor_target(class_="input") }}</label>
+    <label>{{ t('create_campaign_desc_label') }} {{ form.description(class_="input", rows=4) }}</label>
+    <label>{{ t('create_campaign_target_label') }} {{ t('create_campaign_optional') }} {{ form.per_contributor_target(class_="input") }}</label>
     {% for err in form.per_contributor_target.errors %}<p class="error">{{ err }}</p>{% endfor %}
-    <label>{{ form.deadline.label }} (optional) {{ form.deadline(class_="input") }}</label>
-    {{ form.submit(class_="btn btn-primary") }}
+    <label>{{ t('create_campaign_deadline_label') }} {{ t('create_campaign_optional') }} {{ form.deadline(class_="input") }}</label>
+    {{ form.submit(class_="btn btn-primary", value=t('create_campaign_submit')) }}
   </form>
 </div>
 {% endblock %}

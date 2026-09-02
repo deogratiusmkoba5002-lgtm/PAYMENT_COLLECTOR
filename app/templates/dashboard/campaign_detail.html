@@ -4,41 +4,41 @@
 <div class="dash-header">
   <h1>{{ campaign.title }}</h1>
   <span class="badge badge-{{ 'closed' if campaign.is_closed else ('expired' if campaign.is_expired else 'active') }}">
-    {{ 'Closed' if campaign.is_closed else ('Expired' if campaign.is_expired else 'Active') }}
+    {{ t('badge_closed') if campaign.is_closed else (t('badge_expired') if campaign.is_expired else t('badge_active')) }}
   </span>
 </div>
 <div class="card">
-  <p>Public link:
+  <p>{{ t('detail_public_link') }}
     <code id="public-link">{{ request.url_root.rstrip('/') }}{{ url_for('payments.campaign_page', slug=campaign.slug) }}</code>
     <button id="copy-link-btn" class="btn btn-secondary"
-      data-link="{{ request.url_root.rstrip('/') }}{{ url_for('payments.campaign_page', slug=campaign.slug) }}">Copy Link</button>
+      data-link="{{ request.url_root.rstrip('/') }}{{ url_for('payments.campaign_page', slug=campaign.slug) }}">{{ t('detail_copy_link') }}</button>
   </p>
-  <p>Total collected: {{ "%.2f"|format(campaign.total_collected) }}</p>
-  <p>Successful contributors: {{ campaign.successful_contributor_count }}</p>
-  {% if campaign.per_contributor_target %}<p>Target per contributor: {{ "%.2f"|format(campaign.per_contributor_target) }}</p>{% endif %}
-  {% if campaign.deadline %}<p>Deadline: {{ campaign.deadline.strftime("%d %b %Y, %H:%M") }}</p>{% endif %}
+  <p>{{ t('detail_total_collected') }} {{ "%.2f"|format(campaign.total_collected) }}</p>
+  <p>{{ t('detail_successful_contributors') }} {{ campaign.successful_contributor_count }}</p>
+  {% if campaign.per_contributor_target %}<p>{{ t('detail_target') }} {{ "%.2f"|format(campaign.per_contributor_target) }}</p>{% endif %}
+  {% if campaign.deadline %}<p>{{ t('detail_deadline') }} {{ campaign.deadline.strftime("%d %b %Y, %H:%M") }}</p>{% endif %}
   <div class="actions">
-    <a class="btn btn-secondary" href="{{ url_for('exports.export_campaign', campaign_id=campaign.id) }}">Download Excel Report</a>
-    <a class="btn btn-secondary" href="{{ url_for('payments.contribute', slug=campaign.slug) }}">Contribute to This Campaign</a>
+    <a class="btn btn-secondary" href="{{ url_for('exports.export_campaign', campaign_id=campaign.id) }}">{{ t('detail_download_excel') }}</a>
+    <a class="btn btn-secondary" href="{{ url_for('payments.contribute', slug=campaign.slug) }}">{{ t('detail_contribute_btn') }}</a>
     {% if is_owner %}
       {% if not campaign.is_closed %}
       <form method="POST" action="{{ url_for('campaigns.close_campaign', campaign_id=campaign.id) }}" style="display:inline">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button class="btn btn-danger" type="submit">Close Campaign</button>
+        <button class="btn btn-danger" type="submit">{{ t('detail_close_campaign') }}</button>
       </form>
       {% elif not campaign.is_expired %}
       <form method="POST" action="{{ url_for('campaigns.reopen_campaign', campaign_id=campaign.id) }}" style="display:inline">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button class="btn btn-secondary" type="submit">Reopen Campaign</button>
+        <button class="btn btn-secondary" type="submit">{{ t('detail_reopen_campaign') }}</button>
       </form>
       {% endif %}
     {% endif %}
   </div>
 </div>
 <div class="card">
-  <h2>Contributors</h2>
+  <h2>{{ t('detail_contributors_heading') }}</h2>
   <table class="contrib-table">
-    <thead><tr><th>Name</th><th>Amount Paid</th><th>Remaining</th><th>Progress</th></tr></thead>
+    <thead><tr><th>{{ t('table_name') }}</th><th>{{ t('table_amount_paid') }}</th><th>{{ t('table_remaining') }}</th><th>{{ t('table_progress') }}</th></tr></thead>
     <tbody>
       {% for p in participants %}
       {% if p.total_paid > 0 %}
@@ -50,7 +50,7 @@
       </tr>
       {% endif %}
       {% else %}
-      <tr><td colspan="4">No contributions yet.</td></tr>
+      <tr><td colspan="4">{{ t('table_no_contributions') }}</td></tr>
       {% endfor %}
     </tbody>
   </table>

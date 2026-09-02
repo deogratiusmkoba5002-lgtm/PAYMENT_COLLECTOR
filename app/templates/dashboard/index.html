@@ -2,40 +2,40 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 <div class="dash-header">
-  <h1>My Dashboard</h1>
-  <a class="btn btn-primary" href="{{ url_for('campaigns.create_campaign') }}">+ New Campaign</a>
+  <h1>{{ t('dashboard_title') }}</h1>
+  <a class="btn btn-primary" href="{{ url_for('campaigns.create_campaign') }}">{{ t('dashboard_new_campaign') }}</a>
 </div>
 
-<h2 class="section-title">Campaigns you created</h2>
-{% if not owned %}<p class="muted">You haven't created any campaigns yet.</p>{% endif %}
+<h2 class="section-title">{{ t('dashboard_owned_heading') }}</h2>
+{% if not owned %}<p class="muted">{{ t('dashboard_no_owned') }}</p>{% endif %}
 <div class="campaign-grid">
   {% for c in owned %}
   <a class="card campaign-card" href="{{ url_for('campaigns.view_campaign', campaign_id=c.id) }}">
     <h2>{{ c.title }}</h2>
     <span class="badge badge-{{ 'closed' if c.is_closed else ('expired' if c.is_expired else 'active') }}">
-      {{ 'Closed' if c.is_closed else ('Expired' if c.is_expired else 'Active') }}
+      {{ t('badge_closed') if c.is_closed else (t('badge_expired') if c.is_expired else t('badge_active')) }}
     </span>
-    <p class="amount">Collected: {{ "%.2f"|format(c.total_collected) }}</p>
-    {% if c.per_contributor_target %}<p class="muted" id="target">Target per person: {{ "%.2f"|format(c.per_contributor_target) }}</p>{% endif %}
-    <p class="muted" id="contributor">{{ c.successful_contributor_count }} contributor(s)</p>
-    {% if c.deadline %}<p class="muted" id="deadline">Deadline: {{ c.deadline.strftime("%d %b %Y") }}</p>{% endif %}
+    <p class="amount">{{ t('campaign_collected') }}: {{ "%.2f"|format(c.total_collected) }}</p>
+    {% if c.per_contributor_target %}<p class="muted" id="target">{{ t('campaign_target_per_person') }}: {{ "%.2f"|format(c.per_contributor_target) }}</p>{% endif %}
+    <p class="muted" id="contributor">{{ c.successful_contributor_count }} {{ t('campaign_contributor_suffix') }}</p>
+    {% if c.deadline %}<p class="muted" id="deadline">{{ t('campaign_deadline') }}: {{ c.deadline.strftime("%d %b %Y") }}</p>{% endif %}
   </a>
   {% endfor %}
 </div>
 
-<h2 class="section-title">Campaigns you've contributed to</h2>
-{% if not contributed %}<p class="muted">You haven't contributed to anyone else's campaign yet.</p>{% endif %}
+<h2 class="section-title">{{ t('dashboard_contributed_heading') }}</h2>
+{% if not contributed %}<p class="muted">{{ t('dashboard_no_contributed') }}</p>{% endif %}
 <div class="campaign-grid">
   {% for c in contributed %}
   {% set p = my_participants.get(c.id) %}
   <a class="card campaign-card" href="{{ url_for('payments.campaign_page', slug=c.slug) }}">
     <h2>{{ c.title }}</h2>
     <span class="badge badge-{{ 'closed' if c.is_closed else ('expired' if c.is_expired else 'active') }}">
-      {{ 'Closed' if c.is_closed else ('Expired' if c.is_expired else 'Active') }}
+      {{ t('badge_closed') if c.is_closed else (t('badge_expired') if c.is_expired else t('badge_active')) }}
     </span>
     {% if p %}
-    <p class="amount">You've paid: {{ "%.2f"|format(p.total_paid) }}</p>
-    {% if p.remaining is not none %}<p class="muted">Remaining: {{ "%.2f"|format(p.remaining) }}</p>{% endif %}
+    <p class="amount">{{ t('campaign_you_paid') }}: {{ "%.2f"|format(p.total_paid) }}</p>
+    {% if p.remaining is not none %}<p class="muted">{{ t('campaign_remaining') }}: {{ "%.2f"|format(p.remaining) }}</p>{% endif %}
     {% endif %}
   </a>
   {% endfor %}

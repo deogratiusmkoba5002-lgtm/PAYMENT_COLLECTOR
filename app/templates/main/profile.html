@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ t('profile_title') }}{% endblock %}
+{% block content %}
+<div class="dash-header">
+  <h1>{{ t('profile_title') }}</h1>
+</div>
+<div class="card">
+  <p><strong>{{ t('profile_full_name') }}:</strong> {{ current_user.full_name }}</p>
+  <p><strong>{{ t('profile_username') }}:</strong> {{ current_user.username }}</p>
+  <p><strong>{{ t('profile_email') }}:</strong> {{ current_user.email }}</p>
+  <p><strong>{{ t('profile_member_since') }}:</strong> {{ current_user.created_at.strftime("%d %b %Y") }}</p>
+  <div class="actions">
+    <a class="btn btn-secondary" href="{{ url_for('auth.logout') }}">{{ t('nav_logout') }}</a>
+  </div>
+</div>
+{% endblock %}

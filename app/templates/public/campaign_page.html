@@ -3,21 +3,21 @@
 {% block content %}
 <div class="card">
   <h1>{{ campaign.title }}</h1>
-  {% if is_owner %}<p class="muted">You created this campaign. <a href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.id) }}">Manage it here</a>.</p>{% endif %}
+  {% if is_owner %}<p class="muted">{{ t('public_owner_note') }} <a href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.id) }}">{{ t('public_manage_link') }}</a>.</p>{% endif %}
   {% if campaign.description %}<p>{{ campaign.description }}</p>{% endif %}
-  <p>Total collected so far: {{ "%.2f"|format(campaign.total_collected) }}</p>
-  <p>Contributors so far: {{ campaign.successful_contributor_count }}</p>
+  <p>{{ t('public_total_collected') }} {{ "%.2f"|format(campaign.total_collected) }}</p>
+  <p>{{ t('public_contributors_so_far') }} {{ campaign.successful_contributor_count }}</p>
   {% if campaign.per_contributor_target %}
-  <p>Suggested contribution per person: {{ "%.2f"|format(campaign.per_contributor_target) }}</p>
+  <p>{{ t('public_suggested_contribution') }} {{ "%.2f"|format(campaign.per_contributor_target) }}</p>
   {% endif %}
-  {% if campaign.deadline %}<p>Deadline: {{ campaign.deadline.strftime("%d %b %Y, %H:%M") }}</p>{% endif %}
+  {% if campaign.deadline %}<p>{{ t('public_deadline') }} {{ campaign.deadline.strftime("%d %b %Y, %H:%M") }}</p>{% endif %}
 
   {% if participant %}
   <div class="personal-progress">
-    <h3>Your contribution</h3>
-    <p>You've paid: <strong>{{ "%.2f"|format(participant.total_paid) }}</strong></p>
+    <h3>{{ t('your_contribution_heading') }}</h3>
+    <p>{{ t('you_paid') }} <strong>{{ "%.2f"|format(participant.total_paid) }}</strong></p>
     {% if participant.remaining is not none %}
-    <p>Remaining toward your target: <strong>{{ "%.2f"|format(participant.remaining) }}</strong> ({{ participant.progress_percent }}%)</p>
+    <p>{{ t('remaining_toward_target') }} <strong>{{ "%.2f"|format(participant.remaining) }}</strong> ({{ participant.progress_percent }}%)</p>
     <div class="progress-wrap"><div class="progress-bar" style="width: {{ participant.progress_percent }}%;"></div></div>
     {% endif %}
   </div>
@@ -26,13 +26,13 @@
   <div class="actions">
     {% if campaign.is_active %}
       <a class="btn btn-primary" href="{{ url_for('payments.contribute', slug=campaign.slug) }}">
-        {% if participant %}Add Another Contribution{% else %}Contribute Now{% endif %}
+        {% if participant %}{{ t('add_another') }}{% else %}{{ t('contribute_now') }}{% endif %}
       </a>
     {% else %}
-      <p class="closed-banner">This campaign is no longer accepting contributions.</p>
+      <p class="closed-banner">{{ t('campaign_closed_banner') }}</p>
     {% endif %}
     {% if participant %}
-      <a class="btn btn-secondary" href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.id) }}">View All Contributions</a>
+      <a class="btn btn-secondary" href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.id) }}">{{ t('view_all_contributions') }}</a>
     {% endif %}
   </div>
 </div>

@@ -2,30 +2,26 @@
 {% block title %}ContribuTZ — Collect contributions, simply{% endblock %}
 {% block content %}
 <div class="hero">
-  <h1>Collect contributions for anything that matters.</h1>
-  <p class="hero-sub">
-    Weddings, funerals, fundraisers, community projects — create a campaign,
-    share one link, and watch contributions come in. Anyone can start a
-    campaign. Anyone can contribute to any campaign, including their own.
-  </p>
+  <h1>{{ t('landing_title') }}</h1>
+  <p class="hero-sub">{{ t('landing_sub') }}</p>
   <div class="hero-actions">
-    <a class="btn btn-primary" href="{{ url_for('auth.register') }}">Get Started — It's Free</a>
-    <a class="btn btn-secondary" href="{{ url_for('auth.login') }}">Log In</a>
+    <a class="btn btn-primary" href="{{ url_for('auth.register') }}">{{ t('landing_get_started') }}</a>
+    <a class="btn btn-secondary" href="{{ url_for('auth.login') }}">{{ t('landing_login') }}</a>
   </div>
 </div>
 
 <div class="feature-grid">
   <div class="card feature-card">
-    <h3>Create a campaign</h3>
-    <p class="muted">Set a title, an optional per-person target, and an optional deadline. Get a shareable link instantly.</p>
+    <h3>{{ t('feature1_title') }}</h3>
+    <p class="muted">{{ t('feature1_desc') }}</p>
   </div>
   <div class="card feature-card">
-    <h3>Share it anywhere</h3>
-    <p class="muted">Send the link via WhatsApp or wherever your people are. No account needed to view it.</p>
+    <h3>{{ t('feature2_title') }}</h3>
+    <p class="muted">{{ t('feature2_desc') }}</p>
   </div>
   <div class="card feature-card">
-    <h3>Track it live</h3>
-    <p class="muted">See who's contributed, how much is collected, and export a full report to Excel anytime.</p>
+    <h3>{{ t('feature3_title') }}</h3>
+    <p class="muted">{{ t('feature3_desc') }}</p>
   </div>
 </div>
 {% endblock %}

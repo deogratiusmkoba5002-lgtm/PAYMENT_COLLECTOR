@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ current_lang }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,16 +7,23 @@
   <title>{% block title %}Contribution Collector{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="{{ 'has-bottom-nav' if current_user.is_authenticated else '' }}">
   <header class="topbar">
     <a class="brand" href="{% if current_user.is_authenticated %}{{ url_for('campaigns.dashboard') }}{% else %}{{ url_for('auth.login') }}{% endif %}">ContribuTZ</a>
-    {% if current_user.is_authenticated %}
-      <nav>
-        <a class="nav-link" href="{{ url_for('campaigns.dashboard') }}">Home</a>
-        <span>{{ current_user.username }}</span>
-        <a href="{{ url_for('auth.logout') }}">Logout</a>
-      </nav>
-    {% endif %}
+    <nav>
+      <div class="lang-switch" aria-label="{{ t('nav_language') }}">
+        <a href="{{ url_for('main.set_language', lang_code='en') }}"
+           class="lang-option {{ 'lang-active' if current_lang == 'en' else '' }}">EN</a>
+        <span class="lang-sep">|</span>
+        <a href="{{ url_for('main.set_language', lang_code='sw') }}"
+           class="lang-option {{ 'lang-active' if current_lang == 'sw' else '' }}">SW</a>
+      </div>
+      {% if current_user.is_authenticated %}
+        <a class="nav-link topbar-only-link" href="{{ url_for('campaigns.dashboard') }}">{{ t('nav_home') }}</a>
+        <span class="topbar-only-link">{{ current_user.username }}</span>
+        <a class="topbar-only-link" href="{{ url_for('auth.logout') }}">{{ t('nav_logout') }}</a>
+      {% endif %}
+    </nav>
   </header>
 
   <main class="container">
@@ -31,6 +38,36 @@
     {% endwith %}
     {% block content %}{% endblock %}
   </main>
+
+  {% if current_user.is_authenticated %}
+  <nav class="bottom-nav" aria-label="Primary">
+    <a class="bottom-nav-item {{ 'active' if request.endpoint == 'campaigns.dashboard' else '' }}"
+       href="{{ url_for('campaigns.dashboard') }}">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 10.5 12 3l9 7.5"/>
+        <path d="M5 9.5V21h14V9.5"/>
+        <path d="M9 21v-6h6v6"/>
+      </svg>
+      <span>{{ t('nav_home') }}</span>
+    </a>
+    <a class="bottom-nav-item {{ 'active' if request.endpoint == 'main.notifications' else '' }}"
+       href="{{ url_for('main.notifications') }}">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+      <span>{{ t('nav_notifications') }}</span>
+    </a>
+    <a class="bottom-nav-item {{ 'active' if request.endpoint == 'main.profile' else '' }}"
+       href="{{ url_for('main.profile') }}">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>{{ t('nav_profile') }}</span>
+    </a>
+  </nav>
+  {% endif %}
 
   <div id="toast-container" aria-live="polite"></div>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>

@@ -2,23 +2,23 @@
 {% block title %}Contribute to {{ campaign.title }}{% endblock %}
 {% block content %}
 <div class="card auth-card">
-  <h1>Contribute to {{ campaign.title }}</h1>
+  <h1>{{ t('contribute_title') }} {{ campaign.title }}</h1>
   {% if participant.total_paid %}
-  <p>You've already paid {{ "%.2f"|format(participant.total_paid) }}
-     {% if participant.remaining is not none %} — {{ "%.2f"|format(participant.remaining) }} remaining{% endif %}.</p>
+  <p>{{ t('already_paid') }} {{ "%.2f"|format(participant.total_paid) }}
+     {% if participant.remaining is not none %} — {{ "%.2f"|format(participant.remaining) }} {{ t('remaining_text') }}{% endif %}.</p>
   {% endif %}
   <form method="POST" novalidate>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    <label>You'll be shown as
+    <label>{{ t('display_name_label') }}
       <input class="input" type="text" name="display_name" id="display_name"
              value="{{ participant.display_name }}" maxlength="80">
     </label>
     <label class="checkbox-label">
       <input type="checkbox" name="is_anonymous" id="is_anonymous" {% if participant.is_anonymous %}checked{% endif %}>
-      Contribute anonymously instead
+      {{ t('anonymous_checkbox') }}
     </label>
-    <label>Amount <input class="input" type="number" name="amount" step="0.01" min="0.01" required></label>
-    <button class="btn btn-primary" type="submit">Continue to Payment</button>
+    <label>{{ t('amount_label') }} <input class="input" type="number" name="amount" step="0.01" min="0.01" required></label>
+    <button class="btn btn-primary" type="submit">{{ t('continue_to_payment') }}</button>
   </form>
 </div>
 <script>

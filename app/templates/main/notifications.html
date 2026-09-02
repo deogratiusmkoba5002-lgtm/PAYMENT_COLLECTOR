@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ t('notifications_title') }}{% endblock %}
+{% block content %}
+<div class="dash-header">
+  <h1>{{ t('notifications_title') }}</h1>
+</div>
+<div class="card">
+  <p class="muted" style="text-align:center; padding: 20px 0;">{{ t('notifications_empty') }}</p>
+</div>
+{% endblock %}

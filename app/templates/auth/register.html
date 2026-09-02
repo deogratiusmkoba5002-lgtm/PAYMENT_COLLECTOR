@@ -2,24 +2,24 @@
 {% block title %}Create Account{% endblock %}
 {% block content %}
 <div class="muted-box">
-  <h1>Create Your Account</h1>
-  <p class="muted">One account lets you create your own campaigns and contribute to anyone else's.</p>
+  <h1>{{ t('register_title') }}</h1>
+  <p class="muted">{{ t('register_sub') }}</p>
 </div>
 <div class="card auth-card">
   <form method="POST" novalidate>
     {{ form.hidden_tag() }}
-    <label for="name">{{ form.full_name.label }} {{ form.full_name(class_="input") }}</label>
+    <label for="name">{{ t('register_full_name') }} {{ form.full_name(class_="input") }}</label>
     {% for err in form.full_name.errors %}<p class="error">{{ err }}</p>{% endfor %}
-    <label>{{ form.username.label }} {{ form.username(class_="input") }}</label>
+    <label>{{ t('register_username') }} {{ form.username(class_="input") }}</label>
     {% for err in form.username.errors %}<p class="error">{{ err }}</p>{% endfor %}
-    <label>{{ form.email.label }} {{ form.email(class_="input") }}</label>
+    <label>{{ t('register_email') }} {{ form.email(class_="input") }}</label>
     {% for err in form.email.errors %}<p class="error">{{ err }}</p>{% endfor %}
-    <label>{{ form.password.label }} {{ form.password(class_="input") }}</label>
+    <label>{{ t('register_password') }} {{ form.password(class_="input") }}</label>
     {% for err in form.password.errors %}<p class="error">{{ err }}</p>{% endfor %}
-    <label>{{ form.confirm_password.label }} {{ form.confirm_password(class_="input") }}</label>
+    <label>{{ t('register_confirm_password') }} {{ form.confirm_password(class_="input") }}</label>
     {% for err in form.confirm_password.errors %}<p class="error">{{ err }}</p>{% endfor %}
-    {{ form.submit(class_="btn btn-primary") }}
+    {{ form.submit(class_="btn btn-primary", value=t('register_submit')) }}
   </form>
-  <p>Already have an account? <a href="{{ url_for('auth.login') }}">Log in</a></p>
+  <p>{{ t('register_have_account') }} <a href="{{ url_for('auth.login') }}">{{ t('register_login_link') }}</a></p>
 </div>
 {% endblock %}
