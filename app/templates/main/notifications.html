@@ -4,7 +4,66 @@
 <div class="dash-header">
   <h1>{{ t('notifications_title') }}</h1>
 </div>
-<div class="card">
-  <p class="muted" style="text-align:center; padding: 20px 0;">{{ t('notifications_empty') }}</p>
+
+<div class="notif-board">
+
+  <div class="notif-column">
+    <div class="notif-column-header">
+      <h3>{{ t('notif_created') }}</h3>
+      <a class="notif-create-link" href="{{ url_for('campaigns.create_campaign') }}">+ {{ t('notif_create_new') }}</a>
+    </div>
+    {% if not created %}<p class="muted notif-empty">{{ t('notif_no_items') }}</p>{% endif %}
+    {% for c in created %}
+    <a class="notif-card" href="{{ url_for('campaigns.view_campaign', campaign_id=c.id) }}">
+      <span class="notif-card-title">{{ c.title }}</span>
+      <span class="notif-card-deadline">{{ c.deadline.strftime("%d %b %Y") if c.deadline else t('notif_no_deadline') }}</span>
+    </a>
+    {% endfor %}
+  </div>
+
+  <div class="notif-column">
+    <div class="notif-column-header"><h3>{{ t('notif_participating') }}</h3></div>
+    {% if not participating %}<p class="muted notif-empty">{{ t('notif_no_items') }}</p>{% endif %}
+    {% for c in participating %}
+    <a class="notif-card" href="{{ url_for('payments.campaign_page', slug=c.slug) }}">
+      <span class="notif-card-title">{{ c.title }}</span>
+      <span class="notif-card-deadline">{{ c.deadline.strftime("%d %b %Y") if c.deadline else t('notif_no_deadline') }}</span>
+    </a>
+    {% endfor %}
+  </div>
+
+  <div class="notif-column">
+    <div class="notif-column-header"><h3>{{ t('notif_incomplete') }}</h3></div>
+    {% if not incomplete %}<p class="muted notif-empty">{{ t('notif_no_items') }}</p>{% endif %}
+    {% for c in incomplete %}
+    <a class="notif-card" href="{{ url_for('payments.campaign_page', slug=c.slug) }}">
+      <span class="notif-card-title">{{ c.title }}</span>
+      <span class="notif-card-deadline">{{ c.deadline.strftime("%d %b %Y") if c.deadline else t('notif_no_deadline') }}</span>
+    </a>
+    {% endfor %}
+  </div>
+
+  <div class="notif-column">
+    <div class="notif-column-header"><h3>{{ t('notif_completed') }}</h3></div>
+    {% if not completed %}<p class="muted notif-empty">{{ t('notif_no_items') }}</p>{% endif %}
+    {% for c in completed %}
+    <a class="notif-card" href="{{ url_for('payments.campaign_page', slug=c.slug) }}">
+      <span class="notif-card-title">{{ c.title }}</span>
+      <span class="notif-card-deadline">{{ c.deadline.strftime("%d %b %Y") if c.deadline else t('notif_no_deadline') }}</span>
+    </a>
+    {% endfor %}
+  </div>
+
+  <div class="notif-column">
+    <div class="notif-column-header"><h3>{{ t('notif_expired') }}</h3></div>
+    {% if not expired %}<p class="muted notif-empty">{{ t('notif_no_items') }}</p>{% endif %}
+    {% for c in expired %}
+    <a class="notif-card" href="{{ url_for('payments.campaign_page', slug=c.slug) }}">
+      <span class="notif-card-title">{{ c.title }}</span>
+      <span class="notif-card-deadline">{{ c.deadline.strftime("%d %b %Y") if c.deadline else t('notif_no_deadline') }}</span>
+    </a>
+    {% endfor %}
+  </div>
+
 </div>
 {% endblock %}

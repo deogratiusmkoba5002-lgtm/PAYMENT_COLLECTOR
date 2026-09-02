@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, Response, session, request
 from flask_login import current_user, login_required
 
+from app.models import Campaign, CampaignParticipant
+
 main_bp = Blueprint("main", __name__)
 
 
@@ -19,10 +21,48 @@ def set_language(lang_code):
     return redirect(next_url)
 
 
+@main_bp.route("/set-theme/<theme_name>")
+def set_theme(theme_name):
+    allowed = ("purple", "white", "black", "ocean", "money")
+    if theme_name in allowed:
+        session["theme"] = theme_name
+    next_url = request.referrer or url_for("main.index")
+    return redirect(next_url)
+
+
 @main_bp.route("/notifications")
 @login_required
 def notifications():
-    return render_template("main/notifications.html")
+    created = current_user.owned_campaigns.order_by(Campaign.created_at.desc()).all()
+
+    my_participants = (
+        CampaignParticipant.query.filter_by(user_id=current_user.id)
+        .order_by(CampaignParticipant.created_at.desc())
+        .all()
+    )
+
+    participating, incomplete, completed, expired = [], [], [], []
+
+    for p in my_participants:
+        c = p.campaign
+        if c.is_expired:
+            expired.append(c)
+
+        if p.remaining is not None and p.remaining == 0:
+            completed.append(c)
+        elif not c.is_active:
+            incomplete.append(c)
+        else:
+            participating.append(c)
+
+    return render_template(
+        "main/notifications.html",
+        created=created,
+        participating=participating,
+        incomplete=incomplete,
+        completed=completed,
+        expired=expired,
+    )
 
 
 @main_bp.route("/profile")

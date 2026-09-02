@@ -7,7 +7,7 @@
   <title>{% block title %}Contribution Collector{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body class="{{ 'has-bottom-nav' if current_user.is_authenticated else '' }}">
+<body data-theme="{{ current_theme }}" class="{{ 'has-bottom-nav' if current_user.is_authenticated else '' }}">
   <header class="topbar">
     <a class="brand" href="{% if current_user.is_authenticated %}{{ url_for('campaigns.dashboard') }}{% else %}{{ url_for('auth.login') }}{% endif %}">ContribuTZ</a>
     <nav>

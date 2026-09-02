@@ -12,9 +12,11 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
     csrf.init_app(app)
 
+    from flask import session
+
     @app.context_processor
     def inject_i18n():
-        return dict(t=t, current_lang=get_locale())
+        return dict(t=t, current_lang=get_locale(), current_theme=session.get("theme", "purple"))
 
     from app.models import User
 

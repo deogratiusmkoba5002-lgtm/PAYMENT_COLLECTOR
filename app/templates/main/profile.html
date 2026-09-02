@@ -13,4 +13,31 @@
     <a class="btn btn-secondary" href="{{ url_for('auth.logout') }}">{{ t('nav_logout') }}</a>
   </div>
 </div>
+
+<div class="card">
+  <h2>{{ t('settings_title') }}</h2>
+
+  <p class="settings-label">{{ t('settings_language') }}</p>
+  <div class="lang-switch settings-lang-switch">
+    <a href="{{ url_for('main.set_language', lang_code='en') }}"
+       class="lang-option {{ 'lang-active' if current_lang == 'en' else '' }}">EN</a>
+    <span class="lang-sep">|</span>
+    <a href="{{ url_for('main.set_language', lang_code='sw') }}"
+       class="lang-option {{ 'lang-active' if current_lang == 'sw' else '' }}">SW</a>
+  </div>
+
+  <p class="settings-label">{{ t('settings_theme') }}</p>
+  <div class="theme-grid">
+    <a href="{{ url_for('main.set_theme', theme_name='purple') }}"
+       class="theme-swatch theme-swatch-purple {{ 'theme-swatch-active' if current_theme == 'purple' else '' }}">{{ t('theme_purple') }}</a>
+    <a href="{{ url_for('main.set_theme', theme_name='white') }}"
+       class="theme-swatch theme-swatch-white {{ 'theme-swatch-active' if current_theme == 'white' else '' }}">{{ t('theme_white') }}</a>
+    <a href="{{ url_for('main.set_theme', theme_name='black') }}"
+       class="theme-swatch theme-swatch-black {{ 'theme-swatch-active' if current_theme == 'black' else '' }}">{{ t('theme_black') }}</a>
+    <a href="{{ url_for('main.set_theme', theme_name='ocean') }}"
+       class="theme-swatch theme-swatch-ocean {{ 'theme-swatch-active' if current_theme == 'ocean' else '' }}">{{ t('theme_ocean') }}</a>
+    <a href="{{ url_for('main.set_theme', theme_name='money') }}"
+       class="theme-swatch theme-swatch-money {{ 'theme-swatch-active' if current_theme == 'money' else '' }}">{{ t('theme_money') }}</a>
+  </div>
+</div>
 {% endblock %}

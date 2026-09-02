@@ -509,3 +509,123 @@ body.has-bottom-nav {
     padding: 12px;
   }
 }
+/* =========================================
+   NOTIFICATIONS BOARD (sideways-scroll columns)
+   ========================================= */
+.notif-board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+.notif-column {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 14px;
+}
+.notif-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.notif-column-header h3 { margin: 0; font-size: 15px; }
+.notif-create-link {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+.notif-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  color: var(--color-text);
+}
+.notif-card-title { font-weight: 600; font-size: 14px; }
+.notif-card-deadline { font-size: 12px; color: var(--color-text-muted); }
+.notif-empty { font-size: 13px; }
+
+@media (max-width: 900px) {
+  .notif-board {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scroll-snap-type: x proximity;
+  }
+  .notif-column {
+    flex: 0 0 82vw;
+    scroll-snap-align: start;
+  }
+}
+
+/* =========================================
+   SETTINGS / THEME PICKER
+   ========================================= */
+.settings-label { font-weight: 600; margin: 16px 0 6px; font-size: 14px; }
+.settings-lang-switch { margin-bottom: 6px; }
+.theme-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+.theme-swatch {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid transparent;
+  color: #fff;
+}
+.theme-swatch-active { border-color: var(--color-text); }
+.theme-swatch-purple { background: #9e228e; }
+.theme-swatch-white { background: #cbd5e1; color: #0f172a; }
+.theme-swatch-black { background: #0f172a; }
+.theme-swatch-ocean { background: #0369a1; }
+.theme-swatch-money { background: #15803d; }
+
+/* =========================================
+   THEMES
+   ========================================= */
+body[data-theme="white"] {
+  --color-bg: #f8fafc;
+  --color-card: #ffffff;
+  --color-primary: #9e228e;
+  --color-primary-hover: #7c1c70;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
+}
+
+body[data-theme="black"] {
+  --color-bg: #0b0f19;
+  --color-card: #161c2b;
+  --color-primary: #a855f7;
+  --color-primary-hover: #9333ea;
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --color-border: #2a3347;
+}
+
+body[data-theme="ocean"] {
+  --color-bg: linear-gradient(to top, #0c4a6e, #38bdf8);
+  --color-card: #ffffff;
+  --color-primary: #0369a1;
+  --color-primary-hover: #075985;
+  --color-text: #0f172a;
+  --color-text-muted: #475569;
+  --color-border: #bae6fd;
+}
+
+body[data-theme="money"] {
+  --color-bg: linear-gradient(to top, #14532d, #a3e635);
+  --color-card: #ffffff;
+  --color-primary: #15803d;
+  --color-primary-hover: #166534;
+  --color-text: #14532d;
+  --color-text-muted: #4d7c0f;
+  --color-border: #d9f99d;
+}
