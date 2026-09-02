@@ -1,15 +1,15 @@
 :root {
-  --color-primary: #9e228e;
-  --color-primary-hover: var(--color-bg);
-  --color-accent: #f59e0b;
-  --color-bg: linear-gradient(to top, #9e228e, #c7b0b0);
+  --color-primary: #7e22ce;
+  --color-primary-hover: #6b21a8;
+  --color-accent: #d97706;
+  --color-bg: #f8fafc;
   --color-card: #ffffff;
-  --color-text: #0f172a;
-  --color-text-muted: #00000c;
+  --color-text: #1e293b;
+  --color-text-muted: #64748b;
   --color-border: #e2e8f0;
-  --color-success: #6af59d;
-  --color-pending: #f59e0b;
-  --color-failed: #701761;
+  --color-success: #16a34a;
+  --color-pending: #d97706;
+  --color-failed: #dc2626;
 }
 
 * { box-sizing: border-box; }
@@ -585,47 +585,57 @@ body.has-bottom-nav {
 .theme-swatch-white { background: #cbd5e1; color: #0f172a; }
 .theme-swatch-black { background: #0f172a; }
 .theme-swatch-ocean { background: #0369a1; }
-.theme-swatch-money { background: #15803d; }
+.theme-swatch-green { background: #15803d; }
 
 /* =========================================
-   THEMES
+   THEMES — all white-based, accent color differs
    ========================================= */
-body[data-theme="white"] {
+body[data-theme="purple"] {
   --color-bg: #f8fafc;
   --color-card: #ffffff;
-  --color-primary: #9e228e;
-  --color-primary-hover: #7c1c70;
-  --color-text: #0f172a;
+  --color-primary: #7e22ce;
+  --color-primary-hover: #6b21a8;
+  --color-text: #1e293b;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
+}
+
+body[data-theme="white"] {
+  --color-bg: #ffffff;
+  --color-card: #f8fafc;
+  --color-primary: #334155;
+  --color-primary-hover: #1e293b;
+  --color-text: #1e293b;
   --color-text-muted: #64748b;
   --color-border: #e2e8f0;
 }
 
 body[data-theme="black"] {
-  --color-bg: #0b0f19;
-  --color-card: #161c2b;
-  --color-primary: #a855f7;
-  --color-primary-hover: #9333ea;
+  --color-bg: #0f172a;
+  --color-card: #1e293b;
+  --color-primary: #a78bfa;
+  --color-primary-hover: #8b5cf6;
   --color-text: #f1f5f9;
   --color-text-muted: #94a3b8;
-  --color-border: #2a3347;
+  --color-border: #334155;
 }
 
 body[data-theme="ocean"] {
-  --color-bg: linear-gradient(to top, #0c4a6e, #38bdf8);
+  --color-bg: #f0f9ff;
   --color-card: #ffffff;
   --color-primary: #0369a1;
   --color-primary-hover: #075985;
-  --color-text: #0f172a;
-  --color-text-muted: #475569;
-  --color-border: #bae6fd;
+  --color-text: #1e293b;
+  --color-text-muted: #64748b;
+  --color-border: #e0f2fe;
 }
 
-body[data-theme="money"] {
-  --color-bg: linear-gradient(to top, #14532d, #a3e635);
+body[data-theme="green"] {
+  --color-bg: #f0fdf4;
   --color-card: #ffffff;
   --color-primary: #15803d;
   --color-primary-hover: #166534;
-  --color-text: #14532d;
-  --color-text-muted: #4d7c0f;
-  --color-border: #d9f99d;
+  --color-text: #1e293b;
+  --color-text-muted: #64748b;
+  --color-border: #dcfce7;
 }

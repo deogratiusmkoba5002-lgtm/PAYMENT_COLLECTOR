@@ -23,7 +23,7 @@ def set_language(lang_code):
 
 @main_bp.route("/set-theme/<theme_name>")
 def set_theme(theme_name):
-    allowed = ("purple", "white", "black", "ocean", "money")
+    allowed = ("purple", "white", "black", "ocean", "green")
     if theme_name in allowed:
         session["theme"] = theme_name
     next_url = request.referrer or url_for("main.index")
@@ -45,15 +45,16 @@ def notifications():
 
     for p in my_participants:
         c = p.campaign
+        participating.append(c)  # participating = every campaign I've contributed to
+
         if c.is_expired:
             expired.append(c)
 
-        if p.remaining is not None and p.remaining == 0:
-            completed.append(c)
-        elif not c.is_active:
-            incomplete.append(c)
-        else:
-            participating.append(c)
+        if p.remaining is not None:
+            if p.remaining > 0:
+                incomplete.append(c)
+            else:
+                completed.append(c)
 
     return render_template(
         "main/notifications.html",

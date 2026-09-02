@@ -20,6 +20,8 @@
       </div>
       {% if current_user.is_authenticated %}
         <a class="nav-link topbar-only-link" href="{{ url_for('campaigns.dashboard') }}">{{ t('nav_home') }}</a>
+        <a class="nav-link topbar-only-link" href="{{ url_for('main.notifications') }}">{{ t('nav_notifications') }}</a>
+        <a class="nav-link topbar-only-link" href="{{ url_for('main.profile') }}">{{ t('nav_profile') }}</a>
         <span class="topbar-only-link">{{ current_user.username }}</span>
         <a class="topbar-only-link" href="{{ url_for('auth.logout') }}">{{ t('nav_logout') }}</a>
       {% endif %}

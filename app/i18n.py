@@ -35,7 +35,7 @@ TRANSLATIONS = {
         "theme_white": "White",
         "theme_black": "Black",
         "theme_ocean": "Oceanic Blue",
-        "theme_money": "Money",
+        "theme_money": "Green",
 
         "landing_title": "Collect contributions for anything that matters.",
         "landing_sub": "Weddings, funerals, fundraisers, community projects — create a campaign, share one link, and watch contributions come in. Anyone can start a campaign. Anyone can contribute to any campaign, including their own.",
@@ -171,7 +171,7 @@ TRANSLATIONS = {
         "theme_white": "Nyeupe",
         "theme_black": "Nyeusi",
         "theme_ocean": "Bluu ya Bahari",
-        "theme_money": "Fedha",
+        "theme_money": "Kijani",
 
         "landing_title": "Kusanya michango kwa jambo lolote muhimu.",
         "landing_sub": "Harusi, misiba, uchangishaji fedha, miradi ya jamii — unda kampeni, shiriki kiungo kimoja, na uone michango ikiingia. Yeyote anaweza kuanzisha kampeni. Yeyote anaweza kuchangia kampeni yoyote, hata yake mwenyewe.",
