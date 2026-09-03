@@ -21,6 +21,9 @@
     <a class="btn btn-secondary" href="{{ url_for('exports.export_campaign', campaign_id=campaign.id) }}">{{ t('detail_download_excel') }}</a>
     <a class="btn btn-secondary" href="{{ url_for('payments.contribute', slug=campaign.slug) }}">{{ t('detail_contribute_btn') }}</a>
     {% if is_owner %}
+      {% if is_owner %}
+        <a class="btn btn-secondary" href="{{ url_for('campaigns.whatsapp_settings', campaign_id=campaign.id) }}">{{ t('detail_whatsapp_settings') }}</a>
+        {% if not campaign.is_closed %}
       {% if not campaign.is_closed %}
       <form method="POST" action="{{ url_for('campaigns.close_campaign', campaign_id=campaign.id) }}" style="display:inline">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

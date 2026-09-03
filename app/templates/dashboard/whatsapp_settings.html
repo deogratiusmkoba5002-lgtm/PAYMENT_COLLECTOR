@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ t('whatsapp_settings_title') }}{% endblock %}
+{% block content %}
+<div class="card auth-card">
+  <h1>{{ t('whatsapp_settings_title') }} — {{ campaign.title }}</h1>
+
+  <p>{{ t('whatsapp_status_label') }}
+    <span class="badge badge-{{ 'active' if config.status == 'connected' else ('closed' if config.status == 'error' else 'expired') }}">
+      {{ t('whatsapp_status_' ~ config.status) }}
+    </span>
+  </p>
+  {% if config.status == 'error' and config.last_error %}
+  <p class="error">{{ config.last_error }}</p>
+  {% endif %}
+
+  <form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <label class="checkbox-label">{{ form.is_enabled() }} {{ t('whatsapp_enable_label') }}</label>
+    <label>{{ t('whatsapp_phone_label') }} {{ form.destination_phone(class_="input", placeholder="+255712345678") }}</label>
+    {% for err in form.destination_phone.errors %}<p class="error">{{ err }}</p>{% endfor %}
+    <p class="hint">{{ t('whatsapp_phone_hint') }}</p>
+    {{ form.submit(class_="btn btn-primary", value=t('whatsapp_save')) }}
+  </form>
+
+  <div class="actions">
+    <a class="btn btn-secondary" href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.id) }}">{{ t('back_to_campaign') }}</a>
+  </div>
+</div>
+{% endblock %}

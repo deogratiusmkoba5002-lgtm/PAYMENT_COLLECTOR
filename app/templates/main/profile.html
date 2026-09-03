@@ -26,6 +26,17 @@
        class="lang-option {{ 'lang-active' if current_lang == 'sw' else '' }}">SW</a>
   </div>
 
+  <div class="card">
+   <h2>{{ t('whatsapp_number_heading') }}</h2>
+   <p class="muted">{{ t('whatsapp_number_hint') }}</p>
+   <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+      <label>{{ t('whatsapp_phone_label') }} {{ form.phone_number(class_="input", placeholder="+255712345678") }}</label>
+      {% for err in form.phone_number.errors %}<p class="error">{{ err }}</p>{% endfor %}
+      {{ form.submit(class_="btn btn-primary", value=t('whatsapp_save')) }}
+   </form>
+  </div>
+
   <p class="settings-label">{{ t('settings_theme') }}</p>
   <div class="theme-grid">
     <a href="{{ url_for('main.set_theme', theme_name='purple') }}"

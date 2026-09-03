@@ -1,6 +1,10 @@
 from flask import Blueprint, render_template, redirect, url_for, Response, session, request
 from flask_login import current_user, login_required
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import Optional, Length, Regexp
 
+from app.extensions import db
 from app.models import Campaign, CampaignParticipant
 
 main_bp = Blueprint("main", __name__)
@@ -45,7 +49,7 @@ def notifications():
 
     for p in my_participants:
         c = p.campaign
-        participating.append(c)  # participating = every campaign I've contributed to
+        participating.append(c)
 
         if c.is_expired:
             expired.append(c)
@@ -66,10 +70,26 @@ def notifications():
     )
 
 
-@main_bp.route("/profile")
+class ProfilePhoneForm(FlaskForm):
+    phone_number = StringField(
+        "WhatsApp Number",
+        validators=[Optional(), Length(max=20), Regexp(r"^\+?[0-9]{9,15}$", message="Enter a valid number, e.g. +255712345678")]
+    )
+    submit = SubmitField("Save")
+
+
+@main_bp.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
-    return render_template("main/profile.html")
+    form = ProfilePhoneForm(obj=current_user)
+    if form.validate_on_submit():
+        current_user.phone_number = (form.phone_number.data or "").strip() or None
+        db.session.commit()
+        flash_msg = "Profile updated."
+        from flask import flash
+        flash(flash_msg, "success")
+        return redirect(url_for("main.profile"))
+    return render_template("main/profile.html", form=form)
 
 
 @main_bp.route("/favicon.ico")

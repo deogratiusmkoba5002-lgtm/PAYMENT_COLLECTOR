@@ -3,11 +3,11 @@ import secrets
 from flask import Blueprint, render_template, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, DecimalField, DateTimeLocalField, SubmitField
-from wtforms.validators import DataRequired, Optional, NumberRange, Length
+from wtforms import StringField, TextAreaField, DecimalField, DateTimeLocalField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Optional, NumberRange, Length, Regexp
 
 from app.extensions import db
-from app.models import Campaign, CampaignParticipant
+from app.models import Campaign, CampaignParticipant, CampaignWhatsAppConfig
 from app.payments.routes import get_or_create_participant
 
 campaigns_bp = Blueprint("campaigns", __name__, url_prefix="/dashboard")
@@ -21,6 +21,14 @@ class CampaignForm(FlaskForm):
     )
     deadline = DateTimeLocalField("Deadline", format="%Y-%m-%dT%H:%M", validators=[Optional()])
     submit = SubmitField("Create Campaign")
+
+class WhatsAppSettingsForm(FlaskForm):
+    is_enabled = BooleanField("Enable WhatsApp notifications")
+    destination_phone = StringField(
+        "WhatsApp number",
+        validators=[Optional(), Length(max=20), Regexp(r"^\+?[0-9]{9,15}$", message="Enter a valid number, e.g. +255712345678")]
+    )
+    submit = SubmitField("Save")
 
 
 def slugify(title):
@@ -135,3 +143,31 @@ def reopen_campaign(campaign_id):
         db.session.commit()
         flash("Campaign reopened.", "success")
     return redirect(url_for("campaigns.view_campaign", campaign_id=campaign.id))
+
+@campaigns_bp.route("/campaigns/<int:campaign_id>/whatsapp", methods=["GET", "POST"])
+@login_required
+def whatsapp_settings(campaign_id):
+    campaign = get_owned_campaign_or_404(campaign_id)
+    config = CampaignWhatsAppConfig.query.filter_by(campaign_id=campaign.id).first()
+    if config is None:
+        config = CampaignWhatsAppConfig(campaign_id=campaign.id, destination_phone=current_user.phone_number)
+        db.session.add(config)
+        db.session.commit()
+
+    form = WhatsAppSettingsForm(obj=config)
+    if form.validate_on_submit():
+        phone = (form.destination_phone.data or "").strip()
+        if form.is_enabled.data and not phone:
+            flash("Enter a WhatsApp number before enabling notifications.", "error")
+            return redirect(url_for("campaigns.whatsapp_settings", campaign_id=campaign.id))
+
+        config.destination_phone = phone or None
+        config.is_enabled = form.is_enabled.data
+        config.status = "disabled" if not config.is_enabled else (
+            "not_connected" if config.status == "disabled" else config.status
+        )
+        db.session.commit()
+        flash("WhatsApp settings saved.", "success")
+        return redirect(url_for("campaigns.view_campaign", campaign_id=campaign.id))
+
+    return render_template("dashboard/whatsapp_settings.html", campaign=campaign, config=config, form=form)

@@ -2,6 +2,7 @@ from decimal import Decimal, InvalidOperation
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, abort
 from flask_login import login_required, current_user
 
+from app.notifications.service import notify_contribution_success
 from app.extensions import db
 from app.models import Campaign, Contribution, CampaignParticipant
 from app.payments.providers import get_active_provider
@@ -116,6 +117,9 @@ def simulate_confirm(public_id):
     result = get_active_provider().verify_payment(contribution, request.form.to_dict())
     contribution.status = result
     db.session.commit()
+
+    if contribution.status == "successful":
+        notify_contribution_success(contribution)
 
     participant = contribution.participant
     return jsonify({
