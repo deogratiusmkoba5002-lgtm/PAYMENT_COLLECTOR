@@ -22,14 +22,13 @@ body {
 }
 
 
-
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 20px;
+  padding: 14px 24px;
   background: var(--color-card);
-  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
 }
 
 .brand { 
@@ -40,10 +39,45 @@ body {
   
 }
 
-.topbar nav { 
-  display: flex; 
-  align-items: center; 
-  gap: 14px; 
+.topbar nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--color-border);
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+}
+
+.user-chip .username-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.user-chip .logout-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted) !important;
+  text-decoration: none;
+  padding-left: 10px;
+  border-left: 1px solid var(--color-border);
+}
+
+.user-chip .logout-link:hover {
+  color: var(--color-failed) !important;
 }
 
 .lang-switch {
@@ -89,17 +123,6 @@ body {
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-#target {
-  text-align: left;
-}
-
-#contributor {
-  text-align: left;
-}
-
-#deadline {
-  text-align: left;
-}
 .campaign-card:hover {
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
   transform: translateY(-2px);
@@ -180,12 +203,15 @@ label { display: block; margin: 12px 0 4px; font-size: 14px; font-weight: 600; c
   display: grid;
   place-items: center;
 }
-.muted { 
-  color: var(--color-text-muted); 
-  font-size: 14px; 
+.muted {
+  color: var(--color-text-muted);
+  font-size: 14px;
   margin: 4px 0;
+  text-align: left;
+}
+
+.muted-box .muted {
   text-align: center;
-   
 }
 
 .badge {

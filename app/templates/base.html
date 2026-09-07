@@ -19,11 +19,15 @@
            class="lang-option {{ 'lang-active' if current_lang == 'sw' else '' }}">SW</a>
       </div>
       {% if current_user.is_authenticated %}
+        <span class="nav-divider topbar-only-link"></span>
         <a class="nav-link topbar-only-link" href="{{ url_for('campaigns.dashboard') }}">{{ t('nav_home') }}</a>
         <a class="nav-link topbar-only-link" href="{{ url_for('main.notifications') }}">{{ t('nav_notifications') }}</a>
         <a class="nav-link topbar-only-link" href="{{ url_for('main.profile') }}">{{ t('nav_profile') }}</a>
-        <span class="topbar-only-link">{{ current_user.username }}</span>
-        <a class="topbar-only-link" href="{{ url_for('auth.logout') }}">{{ t('nav_logout') }}</a>
+        <span class="nav-divider topbar-only-link"></span>
+        <div class="user-chip topbar-only-link">
+          <span class="username-text">{{ current_user.username }}</span>
+          <a class="logout-link" href="{{ url_for('auth.logout') }}">{{ t('nav_logout') }}</a>
+        </div>
       {% endif %}
     </nav>
   </header>
