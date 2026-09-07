@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(255), nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False, index=True)
     full_name = db.Column(db.String(255), nullable=False)
-    phone_number = db.column(db.String(20), nullable=True) 
+    phone_number = db.Column(db.String(20), nullable=True) 
     created_at = db.Column(db.DateTime(timezone=True), default=utcnow, nullable=False)
 
     owned_campaigns = db.relationship(
