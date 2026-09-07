@@ -663,3 +663,27 @@ body[data-theme="green"] {
   --color-text-muted: #5f6b64;
   --color-border: #dcece1;
 }
+
+/* =========================================
+   INPUT ICONS
+   ========================================= */
+.input-group {
+  position: relative;
+}
+.input-group .input {
+  padding-left: 38px;
+}
+.input-group .input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  display: flex;
+  pointer-events: none;
+}
+
+.user-chip .user-icon {
+  display: flex;
+  color: var(--color-text-muted);
+}

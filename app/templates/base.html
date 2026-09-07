@@ -25,6 +25,12 @@
         <a class="nav-link topbar-only-link" href="{{ url_for('main.profile') }}">{{ t('nav_profile') }}</a>
         <span class="nav-divider topbar-only-link"></span>
         <div class="user-chip topbar-only-link">
+          <span class="user-icon">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </span>
           <span class="username-text">{{ current_user.username }}</span>
           <a class="logout-link" href="{{ url_for('auth.logout') }}">{{ t('nav_logout') }}</a>
         </div>
