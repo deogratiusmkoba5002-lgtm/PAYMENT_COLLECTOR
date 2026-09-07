@@ -1,12 +1,12 @@
 :root {
-  --color-primary: #7e22ce;
-  --color-primary-hover: #6b21a8;
+  --color-primary: #5b21b6;
+  --color-primary-hover: #4c1d95;
   --color-accent: #d97706;
-  --color-bg: #f8fafc;
-  --color-card: #ffffff;
-  --color-text: #1e293b;
-  --color-text-muted: #64748b;
-  --color-border: #e2e8f0;
+  --color-bg: #f9f8fc;
+  --color-card: #fefdff;
+  --color-text: #1e1b2e;
+  --color-text-muted: #6b7280;
+  --color-border: #e7e5f0;
   --color-success: #16a34a;
   --color-pending: #d97706;
   --color-failed: #dc2626;
@@ -28,9 +28,8 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 14px 20px;
-  background: #c7b0b0;
+  background: var(--color-card);
   border-bottom: 1px solid var(--color-border);
-  border-bottom: none;
 }
 
 .brand { 
@@ -121,7 +120,7 @@ label { display: block; margin: 12px 0 4px; font-size: 14px; font-weight: 600; c
 .input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(199, 176, 176, 0.15);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
 }
 
 /* Buttons */
@@ -376,9 +375,8 @@ label { display: block; margin: 12px 0 4px; font-size: 14px; font-weight: 600; c
 }
 
 .bottom-nav-item.active svg {
-  fill: rgba(158, 34, 142, 0.12);
+  fill: rgba(0, 0, 0, 0.06);
 }
-
 /* Reserve space so fixed bottom-nav never covers content */
 body.has-bottom-nav {
   padding-bottom: 0;
@@ -591,51 +589,51 @@ body.has-bottom-nav {
    THEMES — all white-based, accent color differs
    ========================================= */
 body[data-theme="purple"] {
-  --color-bg: #f8fafc;
-  --color-card: #ffffff;
-  --color-primary: #7e22ce;
-  --color-primary-hover: #6b21a8;
-  --color-text: #1e293b;
-  --color-text-muted: #64748b;
-  --color-border: #e2e8f0;
+  --color-bg: #f9f8fc;
+  --color-card: #fefdff;
+  --color-primary: #5b21b6;
+  --color-primary-hover: #4c1d95;
+  --color-text: #1e1b2e;
+  --color-text-muted: #6b7280;
+  --color-border: #e7e5f0;
 }
 
 body[data-theme="white"] {
-  --color-bg: #ffffff;
-  --color-card: #f8fafc;
-  --color-primary: #334155;
-  --color-primary-hover: #1e293b;
-  --color-text: #1e293b;
-  --color-text-muted: #64748b;
-  --color-border: #e2e8f0;
+  --color-bg: #fafafa;
+  --color-card: #ffffff;
+  --color-primary: #18181b;
+  --color-primary-hover: #3f3f46;
+  --color-text: #18181b;
+  --color-text-muted: #71717a;
+  --color-border: #e4e4e7;
 }
 
 body[data-theme="black"] {
-  --color-bg: #0f172a;
-  --color-card: #1e293b;
-  --color-primary: #a78bfa;
-  --color-primary-hover: #8b5cf6;
-  --color-text: #f1f5f9;
-  --color-text-muted: #94a3b8;
-  --color-border: #334155;
+  --color-bg: #16161d;
+  --color-card: #1e1e28;
+  --color-primary: #34d399;
+  --color-primary-hover: #10b981;
+  --color-text: #f4f4f5;
+  --color-text-muted: #a1a1aa;
+  --color-border: #2e2e3a;
 }
 
 body[data-theme="ocean"] {
-  --color-bg: #f0f9ff;
+  --color-bg: #f5f9fc;
   --color-card: #ffffff;
   --color-primary: #0369a1;
   --color-primary-hover: #075985;
   --color-text: #1e293b;
   --color-text-muted: #64748b;
-  --color-border: #e0f2fe;
+  --color-border: #dbeafe;
 }
 
 body[data-theme="green"] {
-  --color-bg: #f0fdf4;
+  --color-bg: #f6faf7;
   --color-card: #ffffff;
-  --color-primary: #15803d;
-  --color-primary-hover: #166534;
-  --color-text: #1e293b;
-  --color-text-muted: #64748b;
-  --color-border: #dcfce7;
+  --color-primary: #128c53;
+  --color-primary-hover: #0f7a47;
+  --color-text: #1c2a22;
+  --color-text-muted: #5f6b64;
+  --color-border: #dcece1;
 }
