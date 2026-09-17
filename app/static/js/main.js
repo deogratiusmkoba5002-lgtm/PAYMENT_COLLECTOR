@@ -44,6 +44,32 @@ document.addEventListener("DOMContentLoaded", function () {
       }).catch(function () {
         showToast("Could not copy the link. Please copy it manually.", "error");
       });
+      // Notifications board: scrollspy tabs <-> swipeable full-page columns
+      const notifBoard = document.getElementById("notif-board");
+      const notifTabs = document.querySelectorAll(".notif-tab");
+      if (notifBoard && notifTabs.length) {
+        notifTabs.forEach(function (tab) {
+          tab.addEventListener("click", function () {
+            const target = document.getElementById(tab.getAttribute("data-target"));
+            if (target) {
+              notifBoard.scrollTo({ left: target.offsetLeft, behavior: "smooth" });
+            }
+          });
+        });
+
+        const columns = Array.from(notifBoard.querySelectorAll(".notif-column"));
+        const observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+              notifTabs.forEach(function (tab) {
+                tab.classList.toggle("active", tab.getAttribute("data-target") === entry.target.id);
+              });
+            }
+          });
+        }, { root: notifBoard, threshold: [0.6] });
+
+        columns.forEach(function (col) { observer.observe(col); });
+      }
     });
   }
 
