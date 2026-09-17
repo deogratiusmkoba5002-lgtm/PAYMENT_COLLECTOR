@@ -189,6 +189,7 @@ class CampaignWhatsAppConfig(db.Model):
     )
     is_enabled = db.Column(db.Boolean, default=False, nullable=False)
     destination_phone = db.Column(db.String(20), nullable=True)
+    whatsapp_group_id = db.Column(db.String(100), nullable=True)
     status = db.Column(db.String(20), default="not_connected", nullable=False)
     # status values: not_connected | connected | disabled | error
     last_error = db.Column(db.String(255), nullable=True)

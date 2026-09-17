@@ -5,7 +5,8 @@
   <h1>{{ t('whatsapp_settings_title') }} — {{ campaign.title }}</h1>
 
   <p>{{ t('whatsapp_status_label') }}
-    <span class="badge badge-{{ 'active' if config.status == 'connected' else ('closed' if config.status == 'error' else 'expired') }}">
+    <span
+      class="badge badge-{{ 'active' if config.status == 'connected' else ('closed' if config.status == 'error' else 'expired') }}">
       {{ t('whatsapp_status_' ~ config.status) }}
     </span>
   </p>
@@ -16,14 +17,21 @@
   <form method="POST" novalidate>
     {{ form.hidden_tag() }}
     <label class="checkbox-label">{{ form.is_enabled() }} {{ t('whatsapp_enable_label') }}</label>
-    <label>{{ t('whatsapp_phone_label') }} {{ form.destination_phone(class_="input", placeholder="+255712345678") }}</label>
+    <label>{{ t('whatsapp_phone_label') }} {{ form.destination_phone(class_="input", placeholder="+255712345678")
+      }}</label>
     {% for err in form.destination_phone.errors %}<p class="error">{{ err }}</p>{% endfor %}
     <p class="hint">{{ t('whatsapp_phone_hint') }}</p>
+
+    <label>{{ t('whatsapp_groupid_label') }} {{ form.whatsapp_group_id(class_="input", placeholder="1203630298136@g.us")
+      }}</label>
+    {% for err in form.whatsapp_group_id.errors %}<p class="error">{{ err }}</p>{% endfor %}
+    <p class="hint">{{ t('whatsapp_groupid_hint') }}</p>
     {{ form.submit(class_="btn btn-primary", value=t('whatsapp_save')) }}
   </form>
 
   <div class="actions">
-    <a class="btn btn-secondary" href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.id) }}">{{ t('back_to_campaign') }}</a>
+    <a class="btn btn-secondary" href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.id) }}">{{
+      t('back_to_campaign') }}</a>
   </div>
 </div>
 {% endblock %}

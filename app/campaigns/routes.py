@@ -28,6 +28,10 @@ class WhatsAppSettingsForm(FlaskForm):
         "WhatsApp number",
         validators=[Optional(), Length(max=20), Regexp(r"^\+?[0-9]{9,15}$", message="Enter a valid number, e.g. +255712345678")]
     )
+    whatsapp_group_id = StringField(
+        "WhatsApp group ID",
+        validators=[Optional(), Length(max=100)]
+    )
     submit = SubmitField("Save")
 
 
@@ -157,11 +161,13 @@ def whatsapp_settings(campaign_id):
     form = WhatsAppSettingsForm(obj=config)
     if form.validate_on_submit():
         phone = (form.destination_phone.data or "").strip()
-        if form.is_enabled.data and not phone:
-            flash("Enter a WhatsApp number before enabling notifications.", "error")
+        group_id = (form.whatsapp_group_id.data or "").strip()
+        if form.is_enabled.data and not phone and not group_id:
+            flash("Enter a WhatsApp number or group ID before enabling notifications.", "error")
             return redirect(url_for("campaigns.whatsapp_settings", campaign_id=campaign.id))
 
         config.destination_phone = phone or None
+        config.whatsapp_group_id = group_id or None
         config.is_enabled = form.is_enabled.data
         config.status = "disabled" if not config.is_enabled else (
             "not_connected" if config.status == "disabled" else config.status

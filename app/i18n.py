@@ -154,6 +154,9 @@ TRANSLATIONS = {
         "whatsapp_save": "Save",
         "whatsapp_number_heading": "WhatsApp Number",
         "whatsapp_number_hint": "Used as the default notification destination for campaigns you create.",
+
+        "whatsapp_groupid_label": "WhatsApp group ID",
+        "whatsapp_groupid_hint": "The group's ID from Wassenger, ending in @g.us. If set, updates are sent to this group instead of the number above.",
     },
     "sw": {
         "nav_home": "Nyumbani",
@@ -304,6 +307,9 @@ TRANSLATIONS = {
         "whatsapp_save": "Hifadhi",
         "whatsapp_number_heading": "Namba ya WhatsApp",
         "whatsapp_number_hint": "Inatumika kama namba chaguo-msingi ya arifa kwa kampeni unazounda.",
+
+        "whatsapp_groupid_label": "Kitambulisho cha Kikundi cha WhatsApp",
+        "whatsapp_groupid_hint": "Kitambulisho cha kikundi kutoka Wassenger, kinachoishia na @g.us. Kikiwekwa, arifa zitatumwa kwenye kikundi hiki badala ya namba iliyo juu.",
     },
 }
 

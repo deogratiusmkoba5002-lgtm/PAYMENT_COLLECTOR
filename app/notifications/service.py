@@ -49,14 +49,19 @@ def _do_notify(contribution):
     campaign = contribution.participant.campaign
     config = CampaignWhatsAppConfig.query.filter_by(campaign_id=campaign.id).first()
 
-    if not config or not config.is_enabled or not config.destination_phone:
+    if not config or not config.is_enabled:
         return  # WhatsApp not configured/enabled for this campaign
+
+    provider = get_whatsapp_provider()
+    destination = config.whatsapp_group_id if provider.destination_type == "group" else config.destination_phone
+    if not destination:
+        return  # enabled, but no destination set for the currently active provider
 
     notification = Notification(
         contribution_id=contribution.id,
         campaign_id=campaign.id,
         channel="whatsapp",
-        destination=config.destination_phone,
+        destination=destination,
         status="pending",
     )
     db.session.add(notification)
@@ -67,18 +72,4 @@ def _do_notify(contribution):
         return  # already notified for this contribution — do not send again
 
     message = _format_message(contribution)
-    result = get_whatsapp_provider().send(config.destination_phone, message)
-
-    if result["success"]:
-        notification.status = "sent"
-        notification.provider_message_id = result["provider_message_id"]
-        notification.sent_at = utcnow()
-        config.status = "connected"
-        config.last_error = None
-    else:
-        notification.status = "failed"
-        notification.error_message = (result["error"] or "")[:500]
-        config.status = "error"
-        config.last_error = (result["error"] or "")[:255]
-
-    db.session.commit()
+    result = provider.send(destination, message)

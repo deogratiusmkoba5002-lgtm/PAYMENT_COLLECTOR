@@ -17,6 +17,8 @@ logger = logging.getLogger("notifications")
 
 
 class NotificationProvider:
+    destination_type = "phone"  # "phone" or "group"
+
     def send(self, destination, message):
         """Returns {'success': bool, 'provider_message_id': str|None, 'error': str|None}"""
         raise NotImplementedError
@@ -66,7 +68,48 @@ class WhatsAppCloudProvider(NotificationProvider):
         return {"success": False, "provider_message_id": None, "error": error_msg}
 
 
+class WassengerProvider(NotificationProvider):
+    """Wassenger WhatsApp API (https://console.wassenger.com/docs/).
+    Unlike Meta's Cloud API, Wassenger sends directly to WhatsApp groups
+    with no participant cap — this is what lets us drop the per-campaign
+    single-number workaround and notify an actual group."""
+
+    destination_type = "group"
+
+    def __init__(self, api_key, device_id=None):
+        self.api_key = api_key
+        self.device_id = device_id
+
+    def send(self, destination, message):
+        """`destination` must be a WhatsApp group JID, e.g. '1203630298136@g.us'."""
+        url = "https://api.wassenger.com/v1/messages"
+        headers = {
+            "Token": self.api_key,
+            "Content-Type": "application/json",
+        }
+        payload = {"group": destination, "message": message}
+        if self.device_id:
+            payload["device"] = self.device_id
+
+        try:
+            resp = requests.post(url, headers=headers, json=payload, timeout=10)
+            data = resp.json() if resp.content else {}
+        except requests.RequestException as exc:
+            logger.error("Wassenger send failed (network): %s", exc)
+            return {"success": False, "provider_message_id": None, "error": str(exc)}
+
+        if resp.status_code in (200, 201):
+            return {"success": True, "provider_message_id": data.get("id"), "error": None}
+
+        error_msg = data.get("message") or data.get("error") or f"HTTP {resp.status_code}"
+        logger.error("Wassenger send failed: %s", error_msg)
+        return {"success": False, "provider_message_id": None, "error": error_msg}
+
 def get_whatsapp_provider():
+    wassenger_key = os.environ.get("WASSENGER_API_KEY")
+    if wassenger_key:
+        return WassengerProvider(wassenger_key, os.environ.get("WASSENGER_DEVICE_ID"))
+
     phone_number_id = os.environ.get("WHATSAPP_PHONE_NUMBER_ID")
     access_token = os.environ.get("WHATSAPP_ACCESS_TOKEN")
     if not phone_number_id or not access_token:
