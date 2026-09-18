@@ -148,6 +148,18 @@ def reopen_campaign(campaign_id):
         flash("Campaign reopened.", "success")
     return redirect(url_for("campaigns.view_campaign", campaign_id=campaign.id))
 
+@campaigns_bp.route("/campaigns/<int:campaign_id>/delete", methods=["POST"])
+@login_required
+def delete_campaign(campaign_id):
+    campaign = get_owned_campaign_or_404(campaign_id)
+    if not campaign.is_closed:
+        flash("Close the campaign before deleting it.", "error")
+        return redirect(url_for("campaigns.view_campaign", campaign_id=campaign.id))
+    db.session.delete(campaign)
+    db.session.commit()
+    flash("Campaign deleted.", "info")
+    return redirect(url_for("campaigns.dashboard"))
+
 @campaigns_bp.route("/campaigns/<int:campaign_id>/whatsapp", methods=["GET", "POST"])
 @login_required
 def whatsapp_settings(campaign_id):

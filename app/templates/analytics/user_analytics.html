@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}{{ t('user_analytics_title') }}{% endblock %}
+{% block content %}
+<div class="dash-header">
+  <h1>{{ t('user_analytics_title') }}</h1>
+</div>
+
+<div class="stat-grid">
+  <div class="card stat-card">
+    <span class="stat-value">{{ total_created }}</span>
+    <span class="stat-label">{{ t('stat_campaigns_created') }}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-value">{{ "%.2f"|format(total_collected_owned) }}</span>
+    <span class="stat-label">{{ t('stat_total_collected_owned') }}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-value">{{ total_participations }}</span>
+    <span class="stat-label">{{ t('stat_campaigns_joined') }}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-value">{{ "%.2f"|format(total_contributed) }}</span>
+    <span class="stat-label">{{ t('stat_total_contributed') }}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-value">{{ success_rate }}%</span>
+    <span class="stat-label">{{ t('stat_success_rate') }}</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>{{ t('stat_recent_activity') }}</h2>
+  {% if not recent %}<p class="muted">{{ t('stat_no_data') }}</p>{% endif %}
+  <table class="contrib-table">
+    <thead><tr><th>{{ t('table_name') }}</th><th>{{ t('table_amount_paid') }}</th><th>{{ t('status_label') }}</th></tr></thead>
+    <tbody>
+      {% for c in recent %}
+      <tr>
+        <td>{{ c.participant.campaign.title }}</td>
+        <td>{{ "%.2f"|format(c.amount) }}</td>
+        <td><span class="badge badge-{{ c.status }}">{{ c.status }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ t('pledge_page_title') }} {{ campaign.title }}{% endblock %}
+{% block content %}
+<div class="card auth-card">
+  <h1>{{ t('pledge_page_title') }} {{ campaign.title }}</h1>
+  {% if participant.pledge_amount %}
+  <p class="muted">{{ t('current_pledge_label') }} {{ "%.2f"|format(participant.pledge_amount) }}</p>
+  {% endif %}
+  <form method="POST" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>{{ t('pledge_amount_label') }}
+      <input class="input" type="number" name="pledge_amount" step="0.01" min="0.01"
+             value="{{ participant.pledge_amount or '' }}" required>
+    </label>
+    <p class="hint">{{ t('pledge_hint') }}</p>
+    <button class="btn btn-primary" type="submit">{{ t('pledge_submit') }}</button>
+  </form>
+  <div class="actions">
+    <a class="btn btn-secondary" href="{{ url_for('payments.campaign_page', slug=campaign.slug) }}">{{ t('back_to_campaign') }}</a>
+  </div>
+</div>
+{% endblock %}

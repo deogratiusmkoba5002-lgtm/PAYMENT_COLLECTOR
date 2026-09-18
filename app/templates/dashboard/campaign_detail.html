@@ -4,54 +4,104 @@
 <div class="dash-header">
   <h1>{{ campaign.title }}</h1>
   <span class="badge badge-{{ 'closed' if campaign.is_closed else ('expired' if campaign.is_expired else 'active') }}">
-    {{ t('badge_closed') if campaign.is_closed else (t('badge_expired') if campaign.is_expired else t('badge_active')) }}
+    {{ t('badge_closed') if campaign.is_closed else (t('badge_expired') if campaign.is_expired else t('badge_active'))
+    }}
   </span>
 </div>
 <div class="card">
   <p>{{ t('detail_public_link') }}
-    <code id="public-link">{{ request.url_root.rstrip('/') }}{{ url_for('payments.campaign_page', slug=campaign.slug) }}</code>
+    <code
+      id="public-link">{{ request.url_root.rstrip('/') }}{{ url_for('payments.campaign_page', slug=campaign.slug) }}</code>
     <button id="copy-link-btn" class="btn btn-secondary"
-      data-link="{{ request.url_root.rstrip('/') }}{{ url_for('payments.campaign_page', slug=campaign.slug) }}">{{ t('detail_copy_link') }}</button>
+      data-link="{{ request.url_root.rstrip('/') }}{{ url_for('payments.campaign_page', slug=campaign.slug) }}">{{
+      t('detail_copy_link') }}</button>
   </p>
   <p>{{ t('detail_total_collected') }} {{ "%.2f"|format(campaign.total_collected) }}</p>
   <p>{{ t('detail_successful_contributors') }} {{ campaign.successful_contributor_count }}</p>
-  {% if campaign.per_contributor_target %}<p>{{ t('detail_target') }} {{ "%.2f"|format(campaign.per_contributor_target) }}</p>{% endif %}
-  {% if campaign.deadline %}<p>{{ t('detail_deadline') }} {{ campaign.deadline.strftime("%d %b %Y, %H:%M") }}</p>{% endif %}
+  {% if campaign.per_contributor_target %}<p>{{ t('detail_target') }} {{ "%.2f"|format(campaign.per_contributor_target)
+    }}</p>{% endif %}
+  {% if campaign.deadline %}<p>{{ t('detail_deadline') }} {{ campaign.deadline.strftime("%d %b %Y, %H:%M") }}</p>{%
+  endif %}
   <div class="actions">
-    <a class="btn btn-secondary" href="{{ url_for('exports.export_campaign', campaign_id=campaign.id) }}">{{ t('detail_download_excel') }}</a>
-    <a class="btn btn-secondary" href="{{ url_for('payments.contribute', slug=campaign.slug) }}">{{ t('detail_contribute_btn') }}</a>
+    <a class="btn btn-secondary" href="{{ url_for('exports.export_campaign', campaign_id=campaign.id) }}">{{
+      t('detail_download_excel') }}</a>
+    <a class="btn btn-secondary" href="{{ url_for('payments.contribute', slug=campaign.slug) }}">{{
+      <a class="btn btn-secondary" href="{{ url_for('payments.pledge', slug=campaign.slug) }}">{{ t('pledge_button')
+        }}</a>
+      t('detail_contribute_btn') }}</a>
     {% if is_owner %}
-      <a class="btn btn-secondary" href="{{ url_for('campaigns.whatsapp_settings', campaign_id=campaign.id) }}">{{ t('detail_whatsapp_settings') }}</a>
-      {% if not campaign.is_closed %}
-      <form method="POST" action="{{ url_for('campaigns.close_campaign', campaign_id=campaign.id) }}" style="display:inline">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button class="btn btn-danger" type="submit">{{ t('detail_close_campaign') }}</button>
-      </form>
-      {% elif not campaign.is_expired %}
-      <form method="POST" action="{{ url_for('campaigns.reopen_campaign', campaign_id=campaign.id) }}" style="display:inline">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button class="btn btn-secondary" type="submit">{{ t('detail_reopen_campaign') }}</button>
-      </form>
-      {% endif %}
+    {% if not campaign.is_closed %}
+    <form method="POST" action="{{ url_for('campaigns.close_campaign', campaign_id=campaign.id) }}"
+      style="display:inline">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-danger" type="submit">{{ t('detail_close_campaign') }}</button>
+    </form>
+    {% elif not campaign.is_expired %}
+    <form method="POST" action="{{ url_for('campaigns.reopen_campaign', campaign_id=campaign.id) }}"
+      style="display:inline">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-secondary" type="submit">{{ t('detail_reopen_campaign') }}</button>
+    </form>
+    {% endif %}
+    {% if campaign.is_closed %}
+    <form method="POST" action="{{ url_for('campaigns.delete_campaign', campaign_id=campaign.id) }}"
+      style="display:inline" onsubmit="return confirm('{{ t('detail_delete_confirm') }}');">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-danger" type="submit">{{ t('detail_delete_campaign') }}</button>
+    </form>
+    {% endif %}
     {% endif %}
   </div>
 </div>
 <div class="card">
-  <h2>{{ t('detail_contributors_heading') }}</h2>
+  <div class="card-header-row">
+    <h2>{{ t('detail_contributors_heading') }}</h2>
+    <div class="card-header-actions">
+      <a class="icon-btn" href="{{ url_for('exports.export_campaign', campaign_id=campaign.id) }}"
+        aria-label="{{ t('detail_download_excel') }}">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v12" />
+          <path d="m7 10 5 5 5-5" />
+          <path d="M5 21h14" />
+        </svg>
+      </a>
+      {% if is_owner %}
+      <a class="icon-btn" href="{{ url_for('campaigns.whatsapp_settings', campaign_id=campaign.id) }}"
+        aria-label="{{ t('detail_whatsapp_settings') }}">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 11.5a8.5 8.5 0 0 1-12.5 7.5L3 20l1.2-5.3A8.5 8.5 0 1 1 21 11.5Z" />
+        </svg>
+      </a>
+      {% endif %}
+    </div>
+  </div>
   <table class="contrib-table">
-    <thead><tr><th>{{ t('table_name') }}</th><th>{{ t('table_amount_paid') }}</th><th>{{ t('table_remaining') }}</th><th>{{ t('table_progress') }}</th></tr></thead>
+    <thead>
+      <tr>
+        <th>{{ t('table_name') }}</th>
+        <th>{{ t('table_amount_paid') }}</th>
+        <th>{{ t('table_pledge') }}</th>
+        <th>{{ t('table_remaining') }}</th>
+        <th>{{ t('table_progress') }}</th>
+      </tr>
+    </thead>
     <tbody>
       {% for p in participants %}
       {% if p.total_paid > 0 %}
       <tr>
         <td>{{ p.public_display_name }}</td>
         <td>{{ "%.2f"|format(p.total_paid) }}</td>
+        <td>{{ "%.2f"|format(p.pledge_amount) if p.pledge_amount else "—" }}</td>
         <td>{{ "%.2f"|format(p.remaining) if p.remaining is not none else "N/A" }}</td>
         <td>{{ (p.progress_percent ~ "%") if p.progress_percent is not none else "N/A" }}</td>
       </tr>
       {% endif %}
       {% else %}
-      <tr><td colspan="4">{{ t('table_no_contributions') }}</td></tr>
+      <tr>
+        <td colspan="4">{{ t('table_no_contributions') }}</td>
+      </tr>
       {% endfor %}
     </tbody>
   </table>

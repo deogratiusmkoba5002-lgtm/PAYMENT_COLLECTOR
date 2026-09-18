@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}{{ t('analytics_title') }} — {{ campaign.title }}{% endblock %}
+{% block content %}
+<div class="dash-header">
+  <h1>{{ t('analytics_title') }} — {{ campaign.title }}</h1>
+</div>
+
+<div class="stat-grid">
+  <div class="card stat-card">
+    <span class="stat-value">{{ "%.2f"|format(campaign.total_collected) }}</span>
+    <span class="stat-label">{{ t('campaign_collected') }}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-value">{{ campaign.successful_contributor_count }}</span>
+    <span class="stat-label">{{ t('stat_contributors') }}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-value">{{ success_rate }}%</span>
+    <span class="stat-label">{{ t('stat_success_rate') }}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-value">{{ "%.2f"|format(avg_contribution) }}</span>
+    <span class="stat-label">{{ t('stat_avg_contribution') }}</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>{{ t('stat_status_breakdown') }}</h2>
+  <div class="status-breakdown">
+    <span class="badge badge-successful">{{ t('badge_active') }}: {{ status_counts.get('successful', 0) }}</span>
+    <span class="badge badge-pending">Pending: {{ status_counts.get('pending', 0) }}</span>
+    <span class="badge badge-failed">Failed: {{ status_counts.get('failed', 0) }}</span>
+    <span class="badge badge-cancelled">Cancelled: {{ status_counts.get('cancelled', 0) }}</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>{{ t('stat_timeline') }}</h2>
+  {% if not timeline %}<p class="muted">{{ t('stat_no_data') }}</p>{% endif %}
+  <div class="bar-timeline">
+    {% for day, amount in timeline %}
+    <div class="timeline-bar-row">
+      <span class="timeline-bar-label">{{ day[5:] }}</span>
+      <div class="timeline-bar-track">
+        <div class="timeline-bar-fill" style="width: {{ (amount / max_daily * 100) if max_daily else 0 }}%;"></div>
+      </div>
+      <span class="timeline-bar-value">{{ "%.0f"|format(amount) }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="card">
+  <h2>{{ t('stat_top_contributors') }}</h2>
+  {% if not top_contributors %}<p class="muted">{{ t('table_no_contributions') }}</p>{% endif %}
+  <ol class="top-contrib-list">
+    {% for p in top_contributors %}
+    <li class="top-contrib-row">
+      <span>{{ p.public_display_name }}</span>
+      <strong>{{ "%.2f"|format(p.total_paid) }}</strong>
+    </li>
+    {% endfor %}
+  </ol>
+</div>
+
+<div class="stat-grid">
+  <div class="card stat-card">
+    <span class="stat-value">{{ completed|length }}</span>
+    <span class="stat-label">{{ t('stat_completed_targets') }}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-value">{{ incomplete|length }}</span>
+    <span class="stat-label">{{ t('stat_incomplete_targets') }}</span>
+  </div>
+</div>
+
+<div class="actions">
+  <a class="btn btn-secondary" href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.id) }}">{{
+    t('back_to_campaign') }}</a>
+</div>
+{% endblock %}

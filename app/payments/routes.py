@@ -84,6 +84,36 @@ def contribute(slug):
     return render_template("public/contribute_form.html", campaign=campaign, participant=participant)
 
 
+@payments_bp.route("/pay/<slug>/pledge", methods=["GET", "POST"])
+@login_required
+def pledge(slug):
+    campaign = Campaign.query.filter_by(slug=slug).first_or_404()
+
+    if not campaign.is_active:
+        flash("This campaign is no longer accepting pledges.", "error")
+        return redirect(url_for("payments.campaign_page", slug=slug))
+
+    participant = get_or_create_participant(campaign, current_user)
+
+    if request.method == "POST":
+        pledge_raw = (request.form.get("pledge_amount") or "").strip()
+        try:
+            pledge_amount = Decimal(pledge_raw)
+        except (InvalidOperation, ValueError):
+            flash("Please enter a valid pledge amount.", "error")
+            return redirect(url_for("payments.pledge", slug=slug))
+
+        if pledge_amount <= 0 or pledge_amount > Decimal("100000000"):
+            flash("Please enter a valid pledge amount.", "error")
+            return redirect(url_for("payments.pledge", slug=slug))
+
+        participant.pledge_amount = pledge_amount
+        db.session.commit()
+        flash("Pledge saved.", "success")
+        return redirect(url_for("payments.campaign_page", slug=slug))
+
+    return render_template("public/pledge_form.html", campaign=campaign, participant=participant)
+
 @payments_bp.route("/pay/confirm/<public_id>")
 @login_required
 def confirm_page(public_id):

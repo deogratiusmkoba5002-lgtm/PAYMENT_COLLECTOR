@@ -111,6 +111,7 @@ class CampaignParticipant(db.Model):
     )
     display_name = db.Column(db.String(80), nullable=False)
     is_anonymous = db.Column(db.Boolean, default=False, nullable=False)
+    pledge_amount = db.Column(db.Numeric(14, 2), nullable=True)
     created_at = db.Column(db.DateTime(timezone=True), default=utcnow, nullable=False)
 
     contributions = db.relationship(
@@ -119,6 +120,7 @@ class CampaignParticipant(db.Model):
 
     __table_args__ = (
         db.UniqueConstraint("campaign_id", "user_id", name="uq_campaign_user"),
+        db.CheckConstraint("pledge_amount IS NULL OR pledge_amount > 0", name="ck_pledge_positive"),
     )
 
     @property
@@ -135,8 +137,22 @@ class CampaignParticipant(db.Model):
         return total or 0
 
     @property
-    def remaining(self):
+    def effective_target(self):
+        """Progress is measured against whichever is higher: the campaign's
+        minimum per-contributor target, or this participant's own pledge."""
         target = self.campaign.per_contributor_target
+        pledge = self.pledge_amount
+        if target is None and pledge is None:
+            return None
+        if target is None:
+            return pledge
+        if pledge is None:
+            return target
+        return max(target, pledge)
+
+    @property
+    def remaining(self):
+        target = self.effective_target
         if target is None:
             return None
         remaining = target - self.total_paid
@@ -144,7 +160,7 @@ class CampaignParticipant(db.Model):
 
     @property
     def progress_percent(self):
-        target = self.campaign.per_contributor_target
+        target = self.effective_target
         if not target or target == 0:
             return None
         pct = (float(self.total_paid) / float(target)) * 100

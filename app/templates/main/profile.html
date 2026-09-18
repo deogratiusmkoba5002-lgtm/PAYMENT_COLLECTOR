@@ -2,53 +2,59 @@
 {% block title %}{{ t('profile_title') }}{% endblock %}
 {% block content %}
 <div class="dash-header">
-  <h1>{{ t('profile_title') }}</h1>
+   <h1>{{ t('profile_title') }}</h1>
 </div>
 <div class="card">
-  <p><strong>{{ t('profile_full_name') }}:</strong> {{ current_user.full_name }}</p>
-  <p><strong>{{ t('profile_username') }}:</strong> {{ current_user.username }}</p>
-  <p><strong>{{ t('profile_email') }}:</strong> {{ current_user.email }}</p>
-  <p><strong>{{ t('profile_member_since') }}:</strong> {{ current_user.created_at.strftime("%d %b %Y") }}</p>
-  <div class="actions">
-    <a class="btn btn-secondary" href="{{ url_for('auth.logout') }}">{{ t('nav_logout') }}</a>
-  </div>
+   <p><strong>{{ t('profile_full_name') }}:</strong> {{ current_user.full_name }}</p>
+   <p><strong>{{ t('profile_username') }}:</strong> {{ current_user.username }}</p>
+   <p><strong>{{ t('profile_email') }}:</strong> {{ current_user.email }}</p>
+   <p><strong>{{ t('profile_member_since') }}:</strong> {{ current_user.created_at.strftime("%d %b %Y") }}</p>
+   <div class="actions">
+      <a class="btn btn-secondary" href="{{ url_for('auth.logout') }}">{{ t('nav_logout') }}</a>
+   </div>
+   <a class="analytics-link" href="{{ url_for('analytics.user_analytics') }}">{{ t('view_my_analytics') }}</a>
 </div>
-
 <div class="card">
-  <h2>{{ t('settings_title') }}</h2>
+   <h2>{{ t('settings_title') }}</h2>
 
-  <p class="settings-label">{{ t('settings_language') }}</p>
-  <div class="lang-switch settings-lang-switch">
-    <a href="{{ url_for('main.set_language', lang_code='en') }}"
-       class="lang-option {{ 'lang-active' if current_lang == 'en' else '' }}">EN</a>
-    <span class="lang-sep">|</span>
-    <a href="{{ url_for('main.set_language', lang_code='sw') }}"
-       class="lang-option {{ 'lang-active' if current_lang == 'sw' else '' }}">SW</a>
-  </div>
+   <p class="settings-label">{{ t('settings_language') }}</p>
+   <div class="lang-switch settings-lang-switch">
+      <a href="{{ url_for('main.set_language', lang_code='en') }}"
+         class="lang-option {{ 'lang-active' if current_lang == 'en' else '' }}">EN</a>
+      <span class="lang-sep">|</span>
+      <a href="{{ url_for('main.set_language', lang_code='sw') }}"
+         class="lang-option {{ 'lang-active' if current_lang == 'sw' else '' }}">SW</a>
+   </div>
 
-  <div class="card">
-   <h2>{{ t('whatsapp_number_heading') }}</h2>
-   <p class="muted">{{ t('whatsapp_number_hint') }}</p>
-   <form method="POST" novalidate>
-      {{ form.hidden_tag() }}
-      <label>{{ t('whatsapp_phone_label') }} {{ form.phone_number(class_="input", placeholder="+255712345678") }}</label>
-      {% for err in form.phone_number.errors %}<p class="error">{{ err }}</p>{% endfor %}
-      {{ form.submit(class_="btn btn-primary", value=t('whatsapp_save')) }}
-   </form>
-  </div>
+   <div class="card">
+      <h2>{{ t('whatsapp_number_heading') }}</h2>
+      <p class="muted">{{ t('whatsapp_number_hint') }}</p>
+      <form method="POST" novalidate>
+         {{ form.hidden_tag() }}
+         <label>{{ t('whatsapp_phone_label') }} {{ form.phone_number(class_="input", placeholder="+255712345678")
+            }}</label>
+         {% for err in form.phone_number.errors %}<p class="error">{{ err }}</p>{% endfor %}
+         {{ form.submit(class_="btn btn-primary", value=t('whatsapp_save')) }}
+      </form>
+   </div>
 
-  <p class="settings-label">{{ t('settings_theme') }}</p>
-  <div class="theme-grid">
-    <a href="{{ url_for('main.set_theme', theme_name='purple') }}"
-       class="theme-swatch theme-swatch-purple {{ 'theme-swatch-active' if current_theme == 'purple' else '' }}">{{ t('theme_purple') }}</a>
-    <a href="{{ url_for('main.set_theme', theme_name='white') }}"
-       class="theme-swatch theme-swatch-white {{ 'theme-swatch-active' if current_theme == 'white' else '' }}">{{ t('theme_white') }}</a>
-    <a href="{{ url_for('main.set_theme', theme_name='black') }}"
-       class="theme-swatch theme-swatch-black {{ 'theme-swatch-active' if current_theme == 'black' else '' }}">{{ t('theme_black') }}</a>
-    <a href="{{ url_for('main.set_theme', theme_name='ocean') }}"
-       class="theme-swatch theme-swatch-ocean {{ 'theme-swatch-active' if current_theme == 'ocean' else '' }}">{{ t('theme_ocean') }}</a>
-    <a href="{{ url_for('main.set_theme', theme_name='green') }}"
-       class="theme-swatch theme-swatch-green {{ 'theme-swatch-active' if current_theme == 'green' else '' }}">{{ t('theme_green') }}</a>
-  </div>
+   <p class="settings-label">{{ t('settings_theme') }}</p>
+   <div class="theme-grid">
+      <a href="{{ url_for('main.set_theme', theme_name='purple') }}"
+         class="theme-swatch theme-swatch-purple {{ 'theme-swatch-active' if current_theme == 'purple' else '' }}">{{
+         t('theme_purple') }}</a>
+      <a href="{{ url_for('main.set_theme', theme_name='white') }}"
+         class="theme-swatch theme-swatch-white {{ 'theme-swatch-active' if current_theme == 'white' else '' }}">{{
+         t('theme_white') }}</a>
+      <a href="{{ url_for('main.set_theme', theme_name='black') }}"
+         class="theme-swatch theme-swatch-black {{ 'theme-swatch-active' if current_theme == 'black' else '' }}">{{
+         t('theme_black') }}</a>
+      <a href="{{ url_for('main.set_theme', theme_name='ocean') }}"
+         class="theme-swatch theme-swatch-ocean {{ 'theme-swatch-active' if current_theme == 'ocean' else '' }}">{{
+         t('theme_ocean') }}</a>
+      <a href="{{ url_for('main.set_theme', theme_name='green') }}"
+         class="theme-swatch theme-swatch-green {{ 'theme-swatch-active' if current_theme == 'green' else '' }}">{{
+         t('theme_green') }}</a>
+   </div>
 </div>
 {% endblock %}

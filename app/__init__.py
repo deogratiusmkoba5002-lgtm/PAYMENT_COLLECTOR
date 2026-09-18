@@ -32,11 +32,13 @@ def create_app(config_class=Config):
     from app.campaigns.routes import campaigns_bp
     from app.payments.routes import payments_bp
     from app.exports.excel import exports_bp
+    from app.analytics.routes import analytics_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(campaigns_bp)
     app.register_blueprint(payments_bp)
     app.register_blueprint(exports_bp)
+    app.register_blueprint(analytics_bp)
 
     return app

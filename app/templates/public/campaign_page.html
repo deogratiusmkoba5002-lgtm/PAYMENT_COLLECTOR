@@ -16,6 +16,9 @@
   <div class="personal-progress">
     <h3>{{ t('your_contribution_heading') }}</h3>
     <p>{{ t('you_paid') }} <strong>{{ "%.2f"|format(participant.total_paid) }}</strong></p>
+    {% if participant.pledge_amount %}
+    <p class="muted">{{ t('current_pledge_label') }} {{ "%.2f"|format(participant.pledge_amount) }}</p>
+    {% endif %}
     {% if participant.remaining is not none %}
     <p>{{ t('remaining_toward_target') }} <strong>{{ "%.2f"|format(participant.remaining) }}</strong> ({{ participant.progress_percent }}%)</p>
     <div class="progress-wrap"><div class="progress-bar" style="width: {{ participant.progress_percent }}%;"></div></div>
@@ -28,6 +31,7 @@
       <a class="btn btn-primary" href="{{ url_for('payments.contribute', slug=campaign.slug) }}">
         {% if participant %}{{ t('add_another') }}{% else %}{{ t('contribute_now') }}{% endif %}
       </a>
+      <a class="btn btn-secondary" href="{{ url_for('payments.pledge', slug=campaign.slug) }}">{{ t('pledge_button') }}</a>
     {% else %}
       <p class="closed-banner">{{ t('campaign_closed_banner') }}</p>
     {% endif %}
