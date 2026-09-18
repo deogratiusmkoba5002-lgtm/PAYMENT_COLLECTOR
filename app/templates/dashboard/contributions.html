@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ t('contributions_title') }} — {{ campaign.title }}{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="contrib-toolbar">
+    <a class="btn btn-secondary download-btn" href="{{ url_for('exports.export_campaign', campaign_id=campaign.id) }}">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 3v12" />
+        <path d="m7 10 5 5 5-5" />
+        <path d="M5 21h14" />
+      </svg>
+      <span>{{ t('detail_download_excel') }}</span>
+    </a>
+  </div>
+
+  <h1>{{ campaign.title }}</h1>
+  <h2>{{ t('contributions_title') }}</h2>
+
+  <table class="contrib-table">
+    <thead>
+      <tr>
+        <th>{{ t('table_name') }}</th>
+        <th>{{ t('table_amount_paid') }}</th>
+        <th>{{ t('table_pledge') }}</th>
+        <th>{{ t('table_remaining') }}</th>
+        <th>{{ t('table_progress') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in participants %}
+      <tr>
+        <td>{{ p.public_display_name }}</td>
+        <td>{{ "%.2f"|format(p.total_paid) }}</td>
+        <td>{{ "%.2f"|format(p.pledge_amount) if p.pledge_amount else "—" }}</td>
+        <td>{{ "%.2f"|format(p.remaining) if p.remaining is not none else "N/A" }}</td>
+        <td>{{ (p.progress_percent ~ "%") if p.progress_percent is not none else "N/A" }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5">{{ t('table_no_contributions') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="actions">
+    <a class="btn btn-secondary" href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.id) }}">{{
+      t('back_to_campaign') }}</a>
+  </div>
+</div>
+{% endblock %}

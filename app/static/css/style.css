@@ -1263,3 +1263,283 @@ body[data-theme="green"] {
 .analytics-link:hover {
   color: var(--color-primary-hover);
 }
+
+/* =========================================
+   CAMPAIGN DETAIL HEADER + HAMBURGER MENU
+   ========================================= */
+.detail-head {
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  margin-bottom: 12px;
+}
+
+.detail-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.detail-title h1 {
+  margin: 0;
+  font-size: 22px;
+  word-break: break-word;
+}
+
+.detail-title .badge {
+  margin-bottom: 0;
+}
+
+.menu-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.menu-btn {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.menu-btn:hover {
+  background: var(--color-border);
+}
+
+.menu-btn svg,
+.menu-item svg,
+.download-btn svg,
+.link-card-icon svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.menu-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 240px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+  padding: 6px;
+  z-index: 30;
+}
+
+.dropdown-menu[hidden] {
+  display: none;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background: var(--color-bg);
+}
+
+.menu-item svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.menu-item-locked {
+  color: var(--color-text-muted);
+}
+
+.menu-crown {
+  margin-left: auto;
+  display: inline-flex;
+}
+
+.menu-item .menu-crown svg {
+  width: 14px;
+  height: 14px;
+  fill: #f59e0b;
+  stroke: #f59e0b;
+}
+
+/* =========================================
+   CONTRIBUTIONS PAGE
+   ========================================= */
+.contrib-toolbar {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+}
+
+.download-btn {
+  margin-top: 0;
+}
+
+.download-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* =========================================
+   HOME SECTION HEADERS
+   ========================================= */
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 24px 0 12px;
+}
+
+.section-head .section-title {
+  margin: 0;
+}
+
+.see-all-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+/* =========================================
+   PROFILE PAGE
+   ========================================= */
+.profile-card h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 14px;
+}
+
+.info-row:last-of-type {
+  border-bottom: none;
+}
+
+.info-label {
+  color: var(--color-text-muted);
+}
+
+.info-value {
+  font-weight: 600;
+  text-align: right;
+  word-break: break-word;
+}
+
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-card:hover {
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+}
+
+.link-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.link-card-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.link-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.link-card-arrow {
+  color: var(--color-text-muted);
+  font-size: 18px;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.sub-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.sub-card h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.pill-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pill-active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}

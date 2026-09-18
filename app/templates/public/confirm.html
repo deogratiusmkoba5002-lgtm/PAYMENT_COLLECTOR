@@ -29,7 +29,7 @@
   {% endif %}
   <div class="actions">
     <a class="btn btn-secondary" href="{{ url_for('payments.campaign_page', slug=campaign.slug) }}">{{ t('back_to_campaign') }}</a>
-    <a class="btn btn-primary" href="{{ url_for('campaigns.view_campaign', campaign_id=campaign.id) }}">{{ t('view_all_contributions') }}</a>
+    <a class="btn btn-primary" href="{{ url_for('campaigns.view_contributions', campaign_id=campaign.id) }}">{{ t('view_contributions') }}</a>
   </div>
 </div>
 {% endblock %}

@@ -9,6 +9,7 @@ from wtforms.validators import DataRequired, Optional, NumberRange, Length, Rege
 from app.extensions import db
 from app.models import Campaign, CampaignParticipant, CampaignWhatsAppConfig
 from app.payments.routes import get_or_create_participant
+from sqlalchemy import select
 
 campaigns_bp = Blueprint("campaigns", __name__, url_prefix="/dashboard")
 
@@ -67,27 +68,24 @@ def get_owned_campaign_or_404(campaign_id):
 @campaigns_bp.route("/")
 @login_required
 def dashboard():
-    owned = current_user.owned_campaigns.order_by(Campaign.created_at.desc()).all()
+    # 3 most recent campaigns the user created
+    owned = current_user.owned_campaigns.order_by(Campaign.created_at.desc()).limit(3).all()
 
-    contributed_campaign_ids = (
-        db.session.query(CampaignParticipant.campaign_id)
-        .filter(CampaignParticipant.user_id == current_user.id)
-        .subquery()
-    )
-    contributed = (
-        Campaign.query.filter(Campaign.id.in_(contributed_campaign_ids))
-        .order_by(Campaign.created_at.desc())
+    # 3 most recent campaigns the user participated in (excluding ones they own)
+    recent_participations = (
+        CampaignParticipant.query
+        .filter(
+            CampaignParticipant.user_id == current_user.id,
+            ~CampaignParticipant.campaign_id.in_(
+                select(Campaign.id).where(Campaign.owner_id == current_user.id)
+            ),
+        )
+        .order_by(CampaignParticipant.created_at.desc())
+        .limit(3)
         .all()
     )
-
-    # a campaign the user owns AND has contributed to should only show in "owned"
-    owned_ids = {c.id for c in owned}
-    contributed = [c for c in contributed if c.id not in owned_ids]
-
-    my_participants = {
-        p.campaign_id: p
-        for p in CampaignParticipant.query.filter_by(user_id=current_user.id).all()
-    }
+    contributed = [p.campaign for p in recent_participations]
+    my_participants = {p.campaign_id: p for p in recent_participations}
 
     return render_template(
         "dashboard/index.html", owned=owned, contributed=contributed, my_participants=my_participants
@@ -123,6 +121,16 @@ def view_campaign(campaign_id):
     participants = campaign.participants.order_by(CampaignParticipant.created_at.desc()).all()
     return render_template(
         "dashboard/campaign_detail.html", campaign=campaign, participants=participants, is_owner=is_owner
+    )
+
+@campaigns_bp.route("/campaigns/<int:campaign_id>/contributions")
+@login_required
+def view_contributions(campaign_id):
+    campaign = get_accessible_campaign_or_404(campaign_id)
+    participants = campaign.participants.order_by(CampaignParticipant.created_at.desc()).all()
+    participants = [p for p in participants if p.total_paid > 0]
+    return render_template(
+        "dashboard/contributions.html", campaign=campaign, participants=participants
     )
 
 

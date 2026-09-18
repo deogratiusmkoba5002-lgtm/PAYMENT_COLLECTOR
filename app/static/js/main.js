@@ -101,6 +101,37 @@ document.addEventListener("DOMContentLoaded", function () {
     columns.forEach(function (col) { observer.observe(col); });
   }
 
+  // Campaign hamburger menu
+  const menuToggle = document.getElementById("campaign-menu-toggle");
+  const menuPanel = document.getElementById("campaign-menu");
+  if (menuToggle && menuPanel) {
+    function closeMenu() {
+      menuPanel.setAttribute("hidden", "");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }
+    menuToggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      const opening = menuPanel.hasAttribute("hidden");
+      if (opening) {
+        menuPanel.removeAttribute("hidden");
+      } else {
+        menuPanel.setAttribute("hidden", "");
+      }
+      menuToggle.setAttribute("aria-expanded", opening ? "true" : "false");
+    });
+    document.addEventListener("click", function (e) {
+      if (!menuPanel.contains(e.target)) closeMenu();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeMenu();
+    });
+    menuPanel.querySelectorAll(".menu-item-locked").forEach(function (item) {
+      item.addEventListener("click", function () {
+        showToast(item.getAttribute("data-msg") || "Premium feature", "info");
+        closeMenu();
+      });
+    });
+  }
   // Simulated payment confirmation buttons
   document.querySelectorAll(".simulate-btn").forEach(function (btn) {
     btn.addEventListener("click", function () {
