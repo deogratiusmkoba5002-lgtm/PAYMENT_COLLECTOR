@@ -13,8 +13,7 @@
   <div class="card campaign-card">
     <a class="stretched-link" href="{{ url_for('campaigns.view_campaign', campaign_id=c.id) }}"
       aria-label="{{ c.title }}"></a>
-    <a class="icon-btn analytics-corner-btn" href="{{ url_for('analytics.campaign_analytics', campaign_id=c.id) }}"
-      aria-label="{{ t('view_analytics') }}">
+        <a class="icon-btn analytics-corner-btn" href="{{ url_for('analytics.campaign_analytics', campaign_id=c.id) }}" aria-label="{{ t('view_analytics') }}" data-tooltip="{{ t('view_analytics') }}"></a>
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round">
         <line x1="4" y1="20" x2="4" y2="12" />
@@ -46,6 +45,7 @@
     <a class="stretched-link" href="{{ url_for('payments.campaign_page', slug=c.slug) }}"
       aria-label="{{ c.title }}"></a>
     <a class="icon-btn analytics-corner-btn" href="{{ url_for('analytics.campaign_analytics', campaign_id=c.id) }}"
+      aria-label="{{ t('view_analytics') }}" data-tooltip="{{ t('view_analytics') }}">
       aria-label="{{ t('view_analytics') }}">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round">

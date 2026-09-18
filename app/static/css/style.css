@@ -1073,6 +1073,7 @@ body[data-theme="green"] {
 }
 
 .icon-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1089,6 +1090,51 @@ body[data-theme="green"] {
 .icon-btn:hover {
   background: var(--color-border);
   color: var(--color-primary);
+}
+
+/* Tooltip label — shown on desktop hover/focus, or on mobile via
+   .tooltip-active (toggled by JS on first tap, see main.js) */
+.icon-btn::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--color-text);
+  color: var(--color-card);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 20;
+}
+
+.icon-btn::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--color-text);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 20;
+}
+
+.icon-btn:hover::after,
+.icon-btn:focus-visible::after,
+.icon-btn.tooltip-active::after,
+.icon-btn:hover::before,
+.icon-btn:focus-visible::before,
+.icon-btn.tooltip-active::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .analytics-corner-btn {

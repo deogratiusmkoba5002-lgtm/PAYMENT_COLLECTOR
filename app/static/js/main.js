@@ -44,6 +44,33 @@ document.addEventListener("DOMContentLoaded", function () {
       }).catch(function () {
         showToast("Could not copy the link. Please copy it manually.", "error");
       });
+      // Icon-button tooltips on touch devices: first tap reveals the label
+      // instead of navigating immediately; a second tap follows the link.
+      // Desktop doesn't need this — CSS :hover already shows the tooltip.
+      if (window.matchMedia && window.matchMedia("(hover: none)").matches) {
+        document.querySelectorAll(".icon-btn[data-tooltip]").forEach(function (btn) {
+          btn.addEventListener("click", function (e) {
+            if (!btn.classList.contains("tooltip-active")) {
+              e.preventDefault();
+              document.querySelectorAll(".icon-btn.tooltip-active").forEach(function (other) {
+                if (other !== btn) other.classList.remove("tooltip-active");
+              });
+              btn.classList.add("tooltip-active");
+              setTimeout(function () {
+                btn.classList.remove("tooltip-active");
+              }, 2200);
+            }
+          });
+        });
+
+        document.addEventListener("click", function (e) {
+          if (!e.target.closest(".icon-btn")) {
+            document.querySelectorAll(".icon-btn.tooltip-active").forEach(function (btn) {
+              btn.classList.remove("tooltip-active");
+            });
+          }
+        });
+      }
     });
   }
 
